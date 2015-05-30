@@ -6,4 +6,13 @@
 
     </application>
 
+    <!-- PERMISOS DE APLICACION -->
+
+    <!-- Internet y sockets -->
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <!-- Bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
 </manifest>

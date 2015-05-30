@@ -3,6 +3,8 @@ package es.upsam.dsm.icsypb_android.controller;
 /**
  * Singleton
  *
+ * Basado en https://gist.github.com/Akayh/5566992
+ *
  * @brief Patrón singleton para gestionar los datos entre activities
  * @author Kr0n0
  */
