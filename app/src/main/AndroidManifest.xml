@@ -7,6 +7,7 @@
 
     <!-- Internet y sockets -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -24,9 +25,9 @@
             android:name=".activities.SplashScreen"
             android:label="@string/title_activity_splash_screen" >
             <intent-filter>
-            <action android:name="android.intent.action.MAIN"></action>
-            <category android:name="android.intent.category.LAUNCHER"></category>
-        </intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
+            </intent-filter>
         </activity>
     </application>
 
