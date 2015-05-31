@@ -7,6 +7,14 @@ import android.util.Log;
 import es.upsam.dsm.icsypb_android.R;
 import es.upsam.dsm.icsypb_android.controller.Singleton;
 
+/**
+ * SplashScreen
+ *
+ * @brief Activity inicial tipo SplashScreen que instancia el Singleton
+ * @author Kr0n0
+ *
+ * Referencias :    http://www.androidhive.info/2013/07/how-to-implement-android-splash-screen-2/
+ */
 public class SplashScreen extends Activity {
 
     // Timeout para que desaparezca el Splash Screen

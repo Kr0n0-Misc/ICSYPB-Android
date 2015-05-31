@@ -2,20 +2,24 @@ package es.upsam.dsm.icsypb_android.controller;
 
 // Importamos las clases de aplicación que vamos a utilizar desde el singleton
 import android.content.Context;
-import es.upsam.dsm.icsypb_android.connections.InternetConnection;
+import android.util.Log;
+
+import es.upsam.dsm.icsypb_android.connections.CommMgr;
 
 /**
  * Singleton
  *
- * Basado en https://gist.github.com/Akayh/5566992
- *
  * @brief Patrón singleton para gestionar los datos entre activities
  * @author Kr0n0
+ *
+ * Referencias :    https://gist.github.com/Akayh/5566992
+ *                  http://possiblemobile.com/2013/06/context/
  */
 public class Singleton {
     // Atributo de clase - Instancia y contexto
     private static Singleton mInstance = null;
     private Context mContext;
+    private static String URL_RUTAS = "http://ctcloud.sytes.net/url_rutas.json";
 
     // Lista de atributos de clase a gestionar
 
@@ -47,8 +51,16 @@ public class Singleton {
      * @return boolean true si hay conexion false si no la hay
      */
     public boolean comprobarConexion() {
-        if (InternetConnection.isNoNetworkAvailable(mContext)) return false;
+        if (CommMgr.isNoNetworkAvailable(mContext)) return false;
         else return true;
     }
+
+    public boolean recibirRutas() {
+        if (CommMgr.getJSON(mContext, URL_RUTAS)) {
+            Log.d("[Singleton]", "Descarga de " + URL_RUTAS + " completada.");
+
+        }
+    }
+
 
 }
