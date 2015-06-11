@@ -36,7 +36,18 @@ public class Baliza {
         this.estropeado = false;
         this.mail = "";
     }
-    // CONSTRUCTOR - CON PARAMETROS
+
+    /**
+     * Baliza
+     * @brief Constructor con parámetros
+     * @param id    Identificador de Baliza
+     * @param texto Texto de Baliza
+     * @param mac   MAC Address de Baliza
+     * @param posicion  Posición de Baliza
+     * @param id_contacto   Identificador del contacto de Baliza
+     * @param estropeado    Flag si estropeado o no
+     * @param mail  Correo de la baliza
+     */
     public Baliza(int id, String texto, String mac, int posicion, int id_contacto, Boolean estropeado, String mail) {
         this.id = id;
         this.texto = texto;
@@ -63,8 +74,8 @@ public class Baliza {
 
     /**
      * setId()
-     * @brief Establece el atributo Baliza.id
-     * @param id
+     * @brief   Establece el atributo Baliza.id
+     * @param   id
      */
     public void setId(int id) {
         this.id = id;
@@ -72,8 +83,8 @@ public class Baliza {
 
     /**
      * getTexto()
-     * @brief Recupera el atributo Baliza.texto
-     * @return texto
+     * @brief   Recupera el atributo Baliza.texto
+     * @return  texto
      */
     public String getTexto() {
         return texto;
@@ -81,8 +92,8 @@ public class Baliza {
 
     /**
      * setTexto()
-     * @brief Establece el atributo Baliza.texto
-     * @param texto
+     * @brief   Establece el atributo Baliza.texto
+     * @param   texto
      */
     public void setTexto(String texto) {
         this.texto = texto;
@@ -90,8 +101,8 @@ public class Baliza {
 
     /**
      * getMac()
-     * @brief Recupera el atributo Baliza.mac
-     * @return mac
+     * @brief   Recupera el atributo Baliza.mac
+     * @return  mac
      */
     public String getMac() {
         return mac;
@@ -99,8 +110,8 @@ public class Baliza {
 
     /**
      * setMac()
-     * @brief Establece el atributo Baliza.mac
-     * @param mac
+     * @brief   Establece el atributo Baliza.mac
+     * @param   mac
      */
     public void setMac(String mac) {
         this.mac = mac;
@@ -108,8 +119,8 @@ public class Baliza {
 
     /**
      * getPosicion()
-     * @brief Recupera el atributo Baliza.posicion
-     * @return posicion
+     * @brief   Recupera el atributo Baliza.posicion
+     * @return  posicion
      */
     public int getPosicion() {
         return posicion;
@@ -117,8 +128,8 @@ public class Baliza {
 
     /**
      * setPosicion()
-     * @brief Establece el atributo Baliza.posicion
-     * @param posicion
+     * @brief   Establece el atributo Baliza.posicion
+     * @param   posicion
      */
     public void setPosicion(int posicion) {
         this.posicion = posicion;
@@ -126,8 +137,8 @@ public class Baliza {
 
     /**
      * getId_contacto()
-     * @brief Recupera el atributo Baliza.id_contacto
-     * @return id_contacto
+     * @brief   Recupera el atributo Baliza.id_contacto
+     * @return  id_contacto
      */
     public int getId_contacto() {
         return id_contacto;
@@ -135,8 +146,8 @@ public class Baliza {
 
     /**
      * setId_contacto()
-     * @brief Establece el atributo Baliza.id_contacto
-     * @param id_contacto
+     * @brief   Establece el atributo Baliza.id_contacto
+     * @param   id_contacto
      */
     public void setId_contacto(int id_contacto) {
         this.id_contacto = id_contacto;
@@ -144,8 +155,8 @@ public class Baliza {
 
     /**
      * getEstropeado()
-     * @brief Recupera el atributo Baliza.estropeado
-     * @return estropeado
+     * @brief   Recupera el atributo Baliza.estropeado
+     * @return  estropeado
      */
     public Boolean getEstropeado() {
         return estropeado;
@@ -153,8 +164,8 @@ public class Baliza {
 
     /**
      * setEstropeado()
-     * @brief Establece el atributo Baliza.estropeado
-     * @param estropeado
+     * @brief   Establece el atributo Baliza.estropeado
+     * @param   estropeado
      */
     public void setEstropeado(Boolean estropeado) {
         this.estropeado = estropeado;
@@ -162,8 +173,8 @@ public class Baliza {
 
     /**
      * getMail()
-     * @brief Recupera el atributo Baliza.mail
-     * @return mail
+     * @brief   Recupera el atributo Baliza.mail
+     * @return  mail
      */
     public String getMail() {
         return mail;
@@ -171,8 +182,8 @@ public class Baliza {
 
     /**
      * setMail()
-     * @brief Establece el atributo Baliza.mail
-     * @param mail
+     * @brief   Establece el atributo Baliza.mail
+     * @param   mail
      */
     public void setMail(String mail) {
         this.mail = mail;
