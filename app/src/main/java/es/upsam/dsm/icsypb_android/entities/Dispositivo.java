@@ -1,7 +1,7 @@
 package es.upsam.dsm.icsypb_android.entities;
 
 /**
- * Baliza
+ * Dispositivo
  *
  * @brief Clase Entity para gestionar la tabla dispositivo
  * @author Kr0n0

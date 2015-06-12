@@ -1,5 +1,7 @@
 package es.upsam.dsm.icsypb_android.entities;
 
+import java.util.List;
+
 /**
  * Ruta
  *
@@ -15,26 +17,48 @@ public class Ruta {
     // ATRIBUTOS DE CLASE - CAMPOS DE LA TABLA
     int id;
     String descripcion;
+    List<Baliza> balizas;
 
     // CONSTRUCTOR BASE - SIN PARAMETROS
     public Ruta() {
         this.id = 0;
         this.descripcion = "";
+        balizas.clear();
     }
 
     /**
      * Ruta - Constructor con parámetros
      * @param id    Identificador de la ruta
      * @param descripcion   Descripción de la ruta
+     * @param balizas Lista de balizas
      */
-    public Ruta(int id, String descripcion) {
+    public Ruta(int id, String descripcion, List<Baliza> balizas) {
         this.id = id;
         this.descripcion = descripcion;
+        this.balizas = balizas;
     }
 
-    /****************************************
+/****************************************
      Getters y Setters de los campos
      ****************************************/
+
+    /**
+     * getBalizas()
+     * @brief Recupera la lista de Balizas
+     * @return balizas
+     */
+    public List<Baliza> getBalizas() {
+        return balizas;
+    }
+
+    /**
+     * setBalizas()
+     * @brief Establece la lista de Balizas
+     * @param balizas
+     */
+    public void setBalizas(List<Baliza> balizas) {
+        this.balizas = balizas;
+    }
 
     /**
      * getId()
@@ -72,3 +96,4 @@ public class Ruta {
         this.descripcion = descripcion;
     }
 }
+

@@ -18,6 +18,7 @@ import java.net.URL;
  * @author Kr0n0
  *
  * Referencias :    https://github.com/learning-layers/android-openid-connect/blob/master/app/src/main/java/com/lnikkila/oidcsample/APIUtility.java
+ *                  http://stackoverflow.com/questions/5991417/how-to-get-response-from-any-url-in-json-for-android-and-than-after-reponse-i-wa
  *
  */
 public class CommMgr {
@@ -39,20 +40,20 @@ public class CommMgr {
      *
      * @param context Contexto de la aplicación
      * @param direccion URL para descargar el JSON
-     * @return TODO
+     * @return String js_descargado
      */
-    public boolean getJSON (Context context, String direccion) {
+    public String getJSON (Context context, String direccion) {
+        String js_descargado;
 
-        // 1 - Descarga del fichero JSON
         try {
-            String JSON = this.descargaFichero(direccion);
+             js_descargado = this.descargaFichero(direccion);
         }
         catch (Exception e){
             Log.v("[CommMgr]", "Fallo en descarga de fichero " + direccion);
+            return(null);
         }
-
-        // 2 - Tratamiento de JSON
-
+        Log.d("[CommMgr]", "JSON Descargado "+ js_descargado);
+        return(js_descargado);
     }
 
     /**
@@ -81,5 +82,8 @@ public class CommMgr {
         }
         return response.toString();
     }
+
+
+
 
 }

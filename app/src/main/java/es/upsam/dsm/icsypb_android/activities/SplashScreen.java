@@ -28,11 +28,14 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.activity_splash);
 
         // 1 - Instanciamos Singleton con el contexto de aplicación
-        Singleton constructor = Singleton.getInstance(this);
+        Singleton datos = Singleton.getInstance(this);
 
         // 2 - Comprobamos la conexión a Internet
-        conexion = constructor.comprobarConexion();
+        conexion = datos.comprobarConexion();
         Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + conexion);
+
+        // 3 - Recibimos las rutas
+        datos.recibirRutas();
 
     }
 
