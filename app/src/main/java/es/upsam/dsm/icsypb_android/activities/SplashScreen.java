@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.concurrent.ExecutionException;
+
 import es.upsam.dsm.icsypb_android.R;
 import es.upsam.dsm.icsypb_android.controller.Singleton;
 
@@ -38,7 +40,13 @@ public class SplashScreen extends Activity {
         //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
         // 3 - Recibimos las rutas
-        bOK = datos.recibirRutas();
+        try {
+            bOK = datos.recibirRutas();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
         //TODO Si false Mensaje de error con boton OK y salida de aplicación
 

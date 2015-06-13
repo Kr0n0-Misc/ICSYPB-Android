@@ -57,8 +57,5 @@ public class GSONUtil {
         } catch (Exception e) {
             return (null);
         }
-        }
-
-
-
+    }
 }
