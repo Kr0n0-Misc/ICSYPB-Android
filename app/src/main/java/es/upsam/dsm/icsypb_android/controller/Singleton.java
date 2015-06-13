@@ -37,6 +37,7 @@ public class Singleton {
         // Inicializamos los atributos de clase
         mContext = context;
         cManager = new CommMgr();
+        lRutas = null;
     }
 
     /**
@@ -95,5 +96,8 @@ public class Singleton {
         }
     }
 
+    public List<Ruta> getlRutas() {
+        return lRutas;
+    }
 
 }

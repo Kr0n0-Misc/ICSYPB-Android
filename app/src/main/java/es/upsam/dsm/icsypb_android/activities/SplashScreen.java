@@ -1,6 +1,7 @@
 package es.upsam.dsm.icsypb_android.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,15 +15,16 @@ import es.upsam.dsm.icsypb_android.controller.Singleton;
  * @author Kr0n0
  *
  * Referencias :    http://www.androidhive.info/2013/07/how-to-implement-android-splash-screen-2/
+ *                  http://devtroce.com/2012/01/19/mensajes-de-dialogo-popup-alertdialog/
  */
 public class SplashScreen extends Activity {
 
-    // Timeout para que desaparezca el Splash Screen
-    private static int SPLASH_TIMEOUT = 3000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean conexion = false;
+        boolean bOK = false;
+        Intent i;
+
+        //TODO Cargar imagen de fondo
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -31,12 +33,18 @@ public class SplashScreen extends Activity {
         Singleton datos = Singleton.getInstance(this);
 
         // 2 - Comprobamos la conexión a Internet
-        conexion = datos.comprobarConexion();
-        Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + conexion);
+        bOK = datos.comprobarConexion();
+        Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + bOK);
+        //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
         // 3 - Recibimos las rutas
-        datos.recibirRutas();
+        bOK = datos.recibirRutas();
+        Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
+        //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
+        // 4 - Cargar el siguiente activity
+        i = new Intent(this, RutasActivity.class);
+        startActivity(i);
     }
 
 }

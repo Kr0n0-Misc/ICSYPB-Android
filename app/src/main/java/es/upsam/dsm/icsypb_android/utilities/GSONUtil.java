@@ -23,14 +23,27 @@ public class GSONUtil {
     // Atributos de clase
     Gson gson;
 
+    /**
+     *
+     */
     public GSONUtil() {
         this.gson = new Gson();
     }
 
+    /**
+     *
+     * @param gson
+     */
     public GSONUtil(Gson gson) {
         this.gson = gson;
     }
 
+    /**
+     *
+     * @param sRutas
+     * @param Ruta
+     * @return
+     */
     public List<Ruta> json2obj (String sRutas, Object Ruta) {
         List<Ruta> lRutas;
 
