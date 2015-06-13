@@ -1,5 +1,6 @@
 package es.upsam.dsm.icsypb_android.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class Ruta {
     public Ruta() {
         this.id = 0;
         this.descripcion = "";
-        balizas.clear();
+        this.balizas = new ArrayList<>();
     }
 
     /**
@@ -38,8 +39,8 @@ public class Ruta {
         this.balizas = balizas;
     }
 
-/****************************************
-     Getters y Setters de los campos
+     /****************************************
+          Getters y Setters de los campos
      ****************************************/
 
     /**

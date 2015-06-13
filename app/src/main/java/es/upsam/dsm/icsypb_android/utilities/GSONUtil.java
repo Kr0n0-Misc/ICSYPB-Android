@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.lang.reflect.Type;
 
@@ -18,6 +19,7 @@ import es.upsam.dsm.icsypb_android.entities.Ruta;
  * Referencias :    http://www.javacodegeeks.com/2013/12/storing-objects-in-android.html
  *                  https://geekytheory.com/trabajando-con-json-en-android-gson/
  *                  http://stackoverflow.com/questions/5554217/google-gson-deserialize-listclass-object-generic-type
+ *                  http://stackoverflow.com/questions/3763937/gson-and-deserializing-an-array-of-objects-with-arrays-in-it
  */
 public class GSONUtil {
     // Atributos de clase
@@ -31,7 +33,6 @@ public class GSONUtil {
     }
 
     /**
-     *
      * @param gson
      */
     public GSONUtil(Gson gson) {
@@ -39,23 +40,19 @@ public class GSONUtil {
     }
 
     /**
-     *
      * @param sRutas
      * @param Ruta
      * @return
      */
-    public List<Ruta> json2obj (String sRutas, Object Ruta) {
-        List<Ruta> lRutas;
+    public List<Ruta> json2obj(String sRutas, Object Ruta) {
+        List<Ruta> lRuta;
 
-        // 1 - Recogemos el tipo de clase que es ArrayList<Ruta>
-        Type listType = new TypeToken<ArrayList<Ruta>>() {}.getType();
-        // 2 - Convertimos la cadena JSON sRutas a la lista de objetos Rutas
-        try {
-            lRutas = this.gson.fromJson(sRutas, listType);
-            // 3 - Devolvemos la lista de objetos Rutas
-            return (lRutas);
-        } catch (Exception e) {
-            return (null);
-        }
+        // 1 - Convertimos la cadena JSON sRutas a la lista de objetos Rutas
+        Ruta[] aRuta = gson.fromJson(sRutas, Ruta[].class);
+        // 2 - Pasamos el Array a objeto List<Ruta>
+        lRuta = new ArrayList<Ruta>(Arrays.asList(aRuta));
+        // 3 - Devolvemos la lista de Rutas
+        return(lRuta);
+
     }
 }
