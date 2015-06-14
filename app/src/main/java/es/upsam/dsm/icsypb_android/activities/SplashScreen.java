@@ -3,6 +3,7 @@ package es.upsam.dsm.icsypb_android.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.concurrent.ExecutionException;
@@ -21,39 +22,48 @@ import es.upsam.dsm.icsypb_android.controller.Singleton;
  */
 public class SplashScreen extends Activity {
 
+    private static int SPLASH_TIME_OUT = 4000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean bOK = false;
-        Intent i;
-
-        //TODO Cargar imagen de fondo
 
         // 1 - Visualizamos el activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // 2 - Instanciamos Singleton con el contexto de aplicación
-        Singleton datos = Singleton.getInstance(this);
+        // 2 - Creamos un handler que se ejecute durante SPLASH_TIME_OUT
+        new Handler().postDelayed(new Runnable() {
 
-        // 3 - Comprobamos la conexión a Internet
-        bOK = datos.comprobarConexion();
-        Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + bOK);
-        //TODO Si false Mensaje de error con boton OK y salida de aplicación
+            // Esto se ejecutará una vez cumplido SPLASH_TIME_OUT
+            @Override
+            public void run() {
+                boolean bOK = false;
+                Intent i;
+                // 2 - Instanciamos Singleton con el contexto de aplicación
+                Singleton datos = Singleton.getInstance(SplashScreen.this);
 
-        // 4 - Recibimos las rutas
-        try {
-            bOK = datos.recibirRutas();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
-        //TODO Si false Mensaje de error con boton OK y salida de aplicación
+                // 3 - Comprobamos la conexión a Internet
+                bOK = datos.comprobarConexion();
+                Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + bOK);
+                //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
-        // 5 - Cargar el siguiente activity
-        i = new Intent(this, RutasActivity.class);
-        startActivity(i);
+                // 4 - Recibimos las rutas
+                try {
+                    bOK = datos.recibirRutas();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
+                //TODO Si false Mensaje de error con boton OK y salida de aplicación
+
+                // 5 - Cargar el siguiente activity, lanzarlo y cerrar este
+                i = new Intent(SplashScreen.this, RutasActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }, SPLASH_TIME_OUT);
     }
-
 }
+

@@ -46,7 +46,6 @@ public class RutasActivity extends ListActivity {
         // 5 - Asociamos el adapter con el listview
         listView.setAdapter(adapter);
 
-        Log.d("[RutasActivity]", "PRUEBA");
     }
 
 }
