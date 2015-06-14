@@ -25,6 +25,7 @@ import es.upsam.dsm.icsypb_android.entities.Ruta;
  *                  http://www.framentos.com/en/android-tutorial/2012/07/16/listview-in-android-using-custom-listadapter-and-viewcache/
  *                  https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  *                  http://stackoverflow.com/questions/21295328/android-listview-with-onclick-items
+ *                  http://stackoverflow.com/questions/5971817/using-an-intent-in-a-list-onitemclick
  */
 public class RutasActivity extends ListActivity {
 
@@ -56,6 +57,11 @@ public class RutasActivity extends ListActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //datos.Trazas("El ID es "+ datos.getRuta(position).getID());
                 //datos.Trazas("La descripcion es "+ datos.getRuta(position).getDescripcion());
+
+                // Lanzamos Activity pasandole el indice de la ruta (lRuta[position])
+                Intent i = new Intent(RutasActivity.this, BTScanActivity.class);
+                i.putExtra("posicion", position);
+                startActivity(i);
             }
         });
 

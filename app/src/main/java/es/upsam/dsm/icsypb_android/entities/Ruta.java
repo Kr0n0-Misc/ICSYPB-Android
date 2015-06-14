@@ -96,5 +96,7 @@ public class Ruta {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
 }
+
 

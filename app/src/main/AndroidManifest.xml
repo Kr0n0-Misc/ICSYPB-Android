@@ -36,6 +36,10 @@
             android:name=".activities.RutasActivity"
             android:label="@string/title_activity_zonas" >
         </activity>
+        <activity
+            android:name=".activities.BTScanActivity"
+            android:label="@string/title_activity_btscan" >
+        </activity>
     </application>
 
 </manifest>
