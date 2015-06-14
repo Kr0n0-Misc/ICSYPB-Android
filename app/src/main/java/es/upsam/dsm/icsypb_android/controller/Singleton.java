@@ -1,10 +1,12 @@
 package es.upsam.dsm.icsypb_android.controller;
 
 // Importamos las clases de aplicación que vamos a utilizar desde el singleton
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +16,7 @@ import es.upsam.dsm.icsypb_android.entities.*;
 // Importamos las clases de conector y utilidades
 import es.upsam.dsm.icsypb_android.connections.CommMgr;
 import es.upsam.dsm.icsypb_android.utilities.GSONUtil;
+import es.upsam.dsm.icsypb_android.utilities.BluetoothDiscovery;
 
 /**
  * Singleton
@@ -54,7 +57,7 @@ public class Singleton {
         return mInstance;
     }
 
-      /**
+    /**
      * comprobarConexion()
      *
      * @brief Método que comprueba si hay conectividad o no
@@ -107,10 +110,27 @@ public class Singleton {
         return lRutas;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public Ruta getRuta(int i) {
         return lRutas.get(i);
     }
 
+    /**
+     *
+     * @param activity
+     * @param alMACs
+     * @return
+     */
+    public ArrayList<String> escanearBT (Activity activity, ArrayList<String> alMACs) {
+        BluetoothDiscovery BTD;
+        BTD = new BluetoothDiscovery(activity, alMACs);
+        alMACs = BTD.getBTAddress();
+        return(alMACs);
+    }
 
     /**
      * Trazas
@@ -123,6 +143,8 @@ public class Singleton {
          Toast toast = Toast.makeText(mContext, mensaje, Toast.LENGTH_SHORT);
          toast.show();
      }
+
+
 
 
 
