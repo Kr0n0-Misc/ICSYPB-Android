@@ -28,18 +28,19 @@ public class SplashScreen extends Activity {
 
         //TODO Cargar imagen de fondo
 
+        // 1 - Visualizamos el activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // 1 - Instanciamos Singleton con el contexto de aplicación
+        // 2 - Instanciamos Singleton con el contexto de aplicación
         Singleton datos = Singleton.getInstance(this);
 
-        // 2 - Comprobamos la conexión a Internet
+        // 3 - Comprobamos la conexión a Internet
         bOK = datos.comprobarConexion();
         Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + bOK);
         //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
-        // 3 - Recibimos las rutas
+        // 4 - Recibimos las rutas
         try {
             bOK = datos.recibirRutas();
         } catch (ExecutionException e) {
@@ -50,7 +51,7 @@ public class SplashScreen extends Activity {
         Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
         //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
-        // 4 - Cargar el siguiente activity
+        // 5 - Cargar el siguiente activity
         i = new Intent(this, RutasActivity.class);
         startActivity(i);
     }

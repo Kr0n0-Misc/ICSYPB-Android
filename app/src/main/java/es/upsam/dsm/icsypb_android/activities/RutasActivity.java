@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import es.upsam.dsm.icsypb_android.R;
+import es.upsam.dsm.icsypb_android.adapters.RutasAdapter;
 import es.upsam.dsm.icsypb_android.controller.Singleton;
 import es.upsam.dsm.icsypb_android.entities.Ruta;
 
@@ -20,24 +21,32 @@ import es.upsam.dsm.icsypb_android.entities.Ruta;
  * Referencias :    http://www.compiletimeerror.com/2013/08/android-listview-example-using.html#.VXvzuef7m20
  *                  http://www.hermosaprogramacion.com/2014/10/android-listas-adaptadores/
  *                  http://www.framentos.com/en/android-tutorial/2012/07/16/listview-in-android-using-custom-listadapter-and-viewcache/
+ *                  https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 public class RutasActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        boolean bOK = false;
+        Intent i;
 
-        // 1 - Recogemos Singleton con el contexto de aplicación
+        // 1 - Visualizamos el activity
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rutas);
+
+        // 2 - Recogemos Singleton con el contexto de aplicación
         Singleton datos = Singleton.getInstance(this);
 
-        // 2 - Recogemos el ListView del XML - El que tenga id @android:id/list
+        // 3 - Instanciamos el adaptador que vamos a usar para la lista de rutas
+        RutasAdapter adapter = new RutasAdapter(this, R.layout.activity_rutas, datos.getlRutas());
+
+        // 4 - Recogemos el listview donde vamos a publicar la lista. Como lo hemos llamado @android:id/list podemos recogerlo con getListView() directamente.
         ListView listView = getListView();
 
-        // 3 - Usamos un ArrayAdapter para recoger los datos de las rutas del singleton
-        ArrayAdapter<Ruta> adapter = new ArrayAdapter<Ruta>(this, R.layout.activity_rutas, datos.getlRutas());
-
-        // 4 - Asociamos el ArrayAdapter al ListView
+        // 5 - Asociamos el adapter con el listview
         listView.setAdapter(adapter);
+
+        Log.d("[RutasActivity]", "PRUEBA");
     }
 
 }
