@@ -3,6 +3,7 @@ package es.upsam.dsm.icsypb_android.controller;
 // Importamos las clases de aplicación que vamos a utilizar desde el singleton
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +24,7 @@ import es.upsam.dsm.icsypb_android.utilities.GSONUtil;
  * Referencias :    https://gist.github.com/Akayh/5566992
  *                  http://possiblemobile.com/2013/06/context/
  *                  http://stackoverflow.com/questions/5991417/how-to-get-response-from-any-url-in-json-for-android-and-than-after-reponse-i-wa
+ *                  http://developer.android.com/guide/topics/ui/notifiers/toasts.html
  */
 public class Singleton {
     // Atributo de clase
@@ -96,11 +98,32 @@ public class Singleton {
     }
 
     /**
+     * getlRutas()
      *
-     * @return
+     * @brief Devuelve el listado de Rutas
+     * @return lRutas
      */
     public List<Ruta> getlRutas() {
         return lRutas;
     }
+
+    public Ruta getRuta(int i) {
+        return lRutas.get(i);
+    }
+
+
+    /**
+     * Trazas
+     *
+     * @brief Deja un mensaje Toast en la aplicación de duración corta
+     * @param mensaje Mensaje de tipo String
+     * @return void
+     */
+     public void Trazas (String mensaje) {
+         Toast toast = Toast.makeText(mContext, mensaje, Toast.LENGTH_SHORT);
+         toast.show();
+     }
+
+
 
 }

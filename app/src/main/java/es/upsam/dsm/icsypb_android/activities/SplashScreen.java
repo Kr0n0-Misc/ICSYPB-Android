@@ -56,6 +56,7 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }
                 Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
+
                 //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
                 // 5 - Cargar el siguiente activity, lanzarlo y cerrar este
