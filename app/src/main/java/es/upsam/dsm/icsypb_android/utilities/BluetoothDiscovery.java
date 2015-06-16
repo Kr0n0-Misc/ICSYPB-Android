@@ -3,6 +3,7 @@ package es.upsam.dsm.icsypb_android.utilities;;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
@@ -13,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
+
+import es.upsam.dsm.icsypb_android.entities.Baliza;
 
 
 /**
@@ -32,16 +35,14 @@ public class BluetoothDiscovery {
     private SingBroadcastReceiver mReceiver;
     String ownMAC;
     SimpleDateFormat sdf;
+    static List<Baliza> lBalizas;
 
     // Constructor
-    public BluetoothDiscovery(Activity activity, ArrayList<String> alMACs)
-    {
-        sdf=new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+    public BluetoothDiscovery(Activity activity, List<Baliza> lBalizas) {
+        sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         mBTA = BluetoothAdapter.getDefaultAdapter();
         // 1 - Recogemos la propia MAC Address antes de hacer nada
         setOwnMAC(mBTA.getAddress());
-        // 2 - Empezamos el discover
-        BluetoothArray = alMACs;
         // 3 - Si está escanenado, cancelamos
         if(mBTA.isDiscovering()) mBTA.cancelDiscovery();
         mBTA.startDiscovery();
@@ -68,7 +69,7 @@ public class BluetoothDiscovery {
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                     // Si está en el array añadimos
                     mac_actual = device.getAddress();
-                    encontrado = buscarArray(BluetoothArray, mac_actual);
+                    encontrado = buscarArray(lBalizas, mac_actual);
                     if (encontrado = true) {
 
                     /* TODO Añadimos los campos al objeto Tracking
@@ -88,22 +89,22 @@ public class BluetoothDiscovery {
      * buscarArray
      *
      * @brief Busca la MAC Address en el ArrayList
-     * @param alMACs
+     * @param lBalizas
      * @param cadena
      * @return true si encontrado, false si no encontrado
      */
-    public boolean buscarArray(ArrayList<String> alMACs, String cadena) {
+    public boolean buscarArray(List<Baliza> lBalizas, String cadena) {
         boolean resultado = false;
+        String mac;
 
-        // 1 - Recorremos el ArrayList de cadenas
-        for (String i : alMACs) {
-            // 2 - Si la MAC es igual a la que tenemos
-            if (i.matches(cadena)) {
-                resultado = true;
-                break;
+        // 1 - Recorremos el ArrayList de lBalizas
+        for (int i=0;i<lBalizas.size();i++) {
+            mac = lBalizas.get(i).getMac();
+            if (mac.equalsIgnoreCase(cadena)) {
+                return (true);
             }
         }
-        return (resultado);
+        return(resultado);
     }
 
     public void startBTScan () {
