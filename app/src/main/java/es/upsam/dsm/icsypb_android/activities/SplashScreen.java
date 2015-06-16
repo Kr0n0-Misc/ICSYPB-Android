@@ -42,15 +42,16 @@ public class SplashScreen extends Activity {
             public void run() {
                 boolean bOK = false;
                 Intent i;
-                // 2 - Instanciamos Singleton con el contexto de aplicación
+
+                // 1 - Instanciamos Singleton con el contexto de aplicación
                 Singleton datos = Singleton.getInstance(SplashScreen.this);
 
-                // 3 - Comprobamos la conexión a Internet
+                // 2 - Comprobamos la conexión a Internet
                 bOK = datos.comprobarConexion();
                 Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + bOK);
                 //TODO Si false Mensaje de error con boton OK y salida de aplicación
 
-                // 4 - Recibimos las rutas
+                // 3 - Recibimos las rutas
                 try {
                     bOK = datos.recibirRutas();
                 } catch (ExecutionException e) {
@@ -60,12 +61,13 @@ public class SplashScreen extends Activity {
                 }
                 Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
                 if (bOK) {
-                    // 5 - Cargar el siguiente activity, lanzarlo y cerrar este
+                    // 4 - Cargar el siguiente activity, lanzarlo y cerrar este
                     i = new Intent(SplashScreen.this, RutasActivity.class);
                     startActivity(i);
                     finish();
                 }
                 else {
+                    // 5 - Salimos de la aplicación
                     finish();
                 }
             }

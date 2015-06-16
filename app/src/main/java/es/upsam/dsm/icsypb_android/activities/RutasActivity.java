@@ -57,15 +57,11 @@ public class RutasActivity extends ListActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //datos.Trazas("El ID es "+ datos.getRuta(position).getID());
                 //datos.Trazas("La descripcion es "+ datos.getRuta(position).getDescripcion());
-
-                // Lanzamos Activity pasandole el indice de la ruta (lRuta[position])
+                // 7 - Lanzamos Activity pasandole el indice de la ruta (lRuta[position])
                 Intent i = new Intent(RutasActivity.this, BTScanActivity.class);
                 i.putExtra("posicion", position);
                 startActivity(i);
             }
         });
-
-
     }
-
 }

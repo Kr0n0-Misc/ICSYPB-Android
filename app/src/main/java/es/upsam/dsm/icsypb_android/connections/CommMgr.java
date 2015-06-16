@@ -28,6 +28,7 @@ import java.util.concurrent.ExecutionException;
  *
  */
 public class CommMgr {
+    // ATRIBUTOS DE CLASE
     public static String js_descargado;
 
     /**
@@ -57,13 +58,10 @@ public class CommMgr {
         // 1 - Inicializamos el array de parámetros para el AsyncTask con la direccion
         params = new String[1];
         params[0] = direccion;
-
         // 2 - Lanzamos el task de descarga con el parámetro de dirección
         descarga = new descargaFicheroTask();
-
         // 3 - Bloqueamos el UI Thread hasta que esté descargado el JSON
         js_descargado = descarga.execute(params).get();
-
         // 4 - Devolvemos el JSON en formato String
         return(js_descargado);
     }
@@ -72,11 +70,11 @@ public class CommMgr {
      * descargaFicheroTask
      *
      * @brief Tarea AsyncTask para descargar el fichero correspondiente
-     * Parámetros
-     *  String -> Array de urls
-     *  Void   -> No gestionado
-     *  String -> Cadena JSON desde fichero
      *
+     * Parámetros AsyncTask
+     *      String -> Array de urls
+     *      Void   -> No gestionado
+     *      String -> Cadena JSON desde fichero
      */
     private class descargaFicheroTask extends AsyncTask<String, Void, String> {
 
@@ -119,7 +117,4 @@ public class CommMgr {
             return cadenaJson;
         }
     }
-
-
-
 }

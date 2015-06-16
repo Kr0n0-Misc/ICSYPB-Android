@@ -14,7 +14,6 @@ import java.util.List;
  *`DESCRIPCION` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL)
  */
 public class Ruta {
-
     // ATRIBUTOS DE CLASE - CAMPOS DE LA TABLA
     int id;
     String descripcion;
@@ -28,7 +27,9 @@ public class Ruta {
     }
 
     /**
-     * Ruta - Constructor con parámetros
+     * Ruta
+     *
+     * @brief Constructor con parámetros
      * @param id    Identificador de la ruta
      * @param descripcion   Descripción de la ruta
      * @param balizas Lista de balizas
@@ -43,56 +44,26 @@ public class Ruta {
           Getters y Setters de los campos
      ****************************************/
 
-    /**
-     * getBalizas()
-     * @brief Recupera la lista de Balizas
-     * @return balizas
-     */
     public List<Baliza> getBalizas() {
         return balizas;
     }
 
-    /**
-     * setBalizas()
-     * @brief Establece la lista de Balizas
-     * @param balizas
-     */
     public void setBalizas(List<Baliza> balizas) {
         this.balizas = balizas;
     }
 
-    /**
-     * getId()
-     * @brief   Recupera el atributo Ruta.id
-     * @return id
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * setId()
-     * @brief   Establece el atributo Ruta.id
-     * @param id
-     */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * getDescripcion()
-     * @brief   Recupera el atributo Ruta.descripcion
-     * @return descripcion
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     * setDescripcion()
-     * @brief   Establece el atributo Ruta.descripcion
-     * @param descripcion
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }

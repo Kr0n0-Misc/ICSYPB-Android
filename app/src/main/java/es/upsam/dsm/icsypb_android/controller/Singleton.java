@@ -30,43 +30,27 @@ import es.upsam.dsm.icsypb_android.utilities.BluetoothDiscovery;
  *                  http://developer.android.com/guide/topics/ui/notifiers/toasts.html
  */
 public class Singleton {
-    // Atributo de clase
+    // ATRIBUTOS DE CLASE
     private static Singleton mInstance = null;
-    private Context mContext;
     //private static String URL_RUTAS = "http://ctcloud.sytes.net/icsypb/rutas.php";
     private static String URL_RUTAS = "http://192.168.0.241/ejemplo.json";
-
-    public Context getmContext() {
-        return mContext;
-    }
-
-    public void setmContext(Context mContext) {
-        this.mContext = mContext;
-    }
-
+    private Context mContext;
     private CommMgr cManager;
     List<Ruta> lRutas;
     List<Tracking> lTracking;
-
-
-    public List<Tracking> getlTracking() {
-        return lTracking;
-    }
-
-    public void setlTracking(List<Tracking> lTracking) {
-        this.lTracking = lTracking;
-    }
 
     private Singleton(Context context) {
         // Inicializamos los atributos de clase
         mContext = context;
         cManager = new CommMgr();
-        lRutas = null;
-        lTracking = null;
+        lRutas = new ArrayList<>();
+        lTracking = new ArrayList<>();
     }
 
     /**
-     * getInstance() - Devuelve la instancia del singleton
+     * getInstance()
+     *
+     * @brief Devuelve la instancia del singleton
      * @return mInstance
      */
     public static Singleton getInstance(Context context) {
@@ -121,25 +105,6 @@ public class Singleton {
     }
 
     /**
-     * getlRutas()
-     *
-     * @brief Devuelve el listado de Rutas
-     * @return lRutas
-     */
-    public List<Ruta> getlRutas() {
-        return lRutas;
-    }
-
-    /**
-     *
-     * @param i
-     * @return
-     */
-    public Ruta getRuta(int i) {
-        return lRutas.get(i);
-    }
-
-    /**
      * escanearBT
      *
      * @param activity Actividad
@@ -155,9 +120,28 @@ public class Singleton {
 
         // 2 - Instanciamos el Discovery de Bluetooth con la lista de MACs
         BTD = new BluetoothDiscovery(activity, alMACs);
+
+        // 3 - TODO
     }
 
+    /**
+     * recuperarMACs
+     *
+     * @brief Recupera las MAC Address del array de balizas
+     *
+     * @param lBalizas
+     * @return ArrayList<String>
+     */
+    private  ArrayList<String> recuperarMACs (List<Baliza> lBalizas) {
+        int i;
+        ArrayList<String> alMACs = null;
 
+        // Recorremos el array de Balizas para ir añadiendo las MAC al array
+        for (i=0;i<lBalizas.size();i++) {
+            alMACs.add(lBalizas.get(i).getMac());
+        }
+        return (alMACs);
+    }
 
 
     /**
@@ -173,25 +157,32 @@ public class Singleton {
      }
 
 
-    /**
-     * recuperarMACs
-     *
-     * @brief Recupera las MAC Address del array de balizas
-     *
-     * @param lBalizas
-     * @return ArrayList<String>
-     */
-     private  ArrayList<String> recuperarMACs (List<Baliza> lBalizas) {
-         int i;
-         ArrayList<String> alMACs = null;
+    /**************************************
+     *        GETTERS Y SETTERS           *
+     **************************************/
 
-         // Recorremos el array de Balizas para ir añadiendo las MAC al array
-         for (i=0;i<lBalizas.size();i++) {
-             alMACs.add(lBalizas.get(i).getMac());
-         }
-        return (alMACs);
-     }
+    public List<Ruta> getlRutas() {
+        return lRutas;
+    }
 
+    public Ruta getRuta(int i) {
+        return lRutas.get(i);
+    }
 
+    public List<Tracking> getlTracking() {
+        return lTracking;
+    }
+
+    public void setlTracking(List<Tracking> lTracking) {
+        this.lTracking = lTracking;
+    }
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
 
 }

@@ -1,6 +1,7 @@
 package es.upsam.dsm.icsypb_android.utilities;;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -15,62 +16,72 @@ import android.util.Log;
 
 
 /**
+ * BluetoothDiscovery
+ *
+ * @brief Clase para gestionar el discover de dispositivos Bluetooth
+ * @author Kr0n0
+ *
+ * Referencias :    http://stackoverflow.com/questions/29122031/how-can-i-show-the-scanned-bluetooth-devices-in-the-listview
+ *                  https://github.com/ArcSung/android_arduino_IRStopwatch/blob/master/src/com/arc/android_timer/BluetoothDiscovery.java
  *
  */
-public class BluetoothDiscovery
-{
+public class BluetoothDiscovery {
+    // ATRIBUTOS DE CLASE
     ArrayList<String> BluetoothArray = new ArrayList<String>();
     private BluetoothAdapter mBTA;
     private SingBroadcastReceiver mReceiver;
-    Set<BluetoothDevice> pairedDevices;
     String ownMAC;
+    SimpleDateFormat sdf;
 
-    public String getOwnMAC() {
-        return ownMAC;
-    }
-
-    public void setOwnMAC(String ownMAC) {
-        this.ownMAC = ownMAC;
-    }
-
-    /**
-     *
-     * @param activity
-     * @param alMACs
-     */
+    // Constructor
     public BluetoothDiscovery(Activity activity, ArrayList<String> alMACs)
     {
+        sdf=new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
         mBTA = BluetoothAdapter.getDefaultAdapter();
         // 1 - Recogemos la propia MAC Address antes de hacer nada
         setOwnMAC(mBTA.getAddress());
         // 2 - Empezamos el discover
         BluetoothArray = alMACs;
-        if(mBTA.isDiscovering())
-            mBTA.cancelDiscovery();
-
-        pairedDevices = mBTA.getBondedDevices();
+        // 3 - Si está escanenado, cancelamos
+        if(mBTA.isDiscovering()) mBTA.cancelDiscovery();
         mBTA.startDiscovery();
-
         mReceiver = new SingBroadcastReceiver();
         IntentFilter ifilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         activity.registerReceiver(mReceiver, ifilter);
-
     }
 
-    /**
-     *
-     */
-    public void startBTScan () {
-        if (!(mBTA.isDiscovering()))
-          mBTA.startDiscovery();
-    }
+    // The BroadcastReceiver that listens for discovered devices and
+    // changes the title when discovery is finished
+    private class SingBroadcastReceiver extends BroadcastReceiver {
 
-    /**
-     *
-     */
-    public void stopBTScan () {
-        if (mBTA.isDiscovering())
-          mBTA.cancelDiscovery();
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            String mac_actual;
+            Boolean encontrado = false;
+
+            // When discovery finds a device
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                // Get the BluetoothDevice object from the Intent
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                // Si el dispositivo no está asociado de serie
+                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+                    // Si está en el array añadimos
+                    mac_actual = device.getAddress();
+                    encontrado = buscarArray(BluetoothArray, mac_actual);
+                    if (encontrado = true) {
+
+                    /* Añadimos los campos al objeto Tracking que creemos
+                        String mac_usuario :: ownMAC;
+                        String mac_baliza :: mac_actual;
+                        String fecha_actual :: fecha_actual=sdf.format(date);;
+                        int id_baliza :: ;
+                        int id_ruta; */
+                        Log.d("[BluetoothDiscovery]", "Dispositivo encontrado para añadir - " + mac_actual);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -95,52 +106,22 @@ public class BluetoothDiscovery
         return (resultado);
     }
 
-    /**
-     *
-     * @return
-     */
-    public ArrayList<String> getBTAddress()
-    {
-        if (pairedDevices.size() > 0)
-        {
-            for (BluetoothDevice device : pairedDevices)
-            {
-                BluetoothArray.add(device.getAddress());
-            }
-        }
-        return BluetoothArray;
+    public void startBTScan () {
+        if (!(mBTA.isDiscovering()))
+            mBTA.startDiscovery();
     }
 
-    // The BroadcastReceiver that listens for discovered devices and
-    // changes the title when discovery is finished
-    private class SingBroadcastReceiver extends BroadcastReceiver
-    {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            String mac_actual;
-            Boolean encontrado = false;
+    public void stopBTScan () {
+        if (mBTA.isDiscovering())
+            mBTA.cancelDiscovery();
+    }
 
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Si el dispositivo no está asociado de serie
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    // Si está en el array añadimos
-                    mac_actual = device.getAddress();
-                    encontrado = buscarArray(BluetoothArray, mac_actual);
-                    if (encontrado = true) {
-                    /* Añadimos los campos al objeto Tracking que creemos
-                        String mac_usuario;
-                        String mac_baliza;
-                        String fecha_actual;
-                        int id_baliza;
-                        int id_ruta; */
-                        Log.d("[BluetoothDiscovery]", "Dispositivo encontrado para añadir - " + mac_actual);
-                    }
-                }
-            }
-        }
-    };
+    public String getOwnMAC() {
+        return ownMAC;
+    }
+
+    public void setOwnMAC(String ownMAC) {
+        this.ownMAC = ownMAC;
+    }
+
 }
