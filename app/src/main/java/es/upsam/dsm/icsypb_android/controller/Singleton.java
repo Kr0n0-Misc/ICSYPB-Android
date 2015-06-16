@@ -35,14 +35,34 @@ public class Singleton {
     private Context mContext;
     //private static String URL_RUTAS = "http://ctcloud.sytes.net/icsypb/rutas.php";
     private static String URL_RUTAS = "http://192.168.0.241/ejemplo.json";
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
     private CommMgr cManager;
     List<Ruta> lRutas;
+    List<Tracking> lTracking;
+
+
+    public List<Tracking> getlTracking() {
+        return lTracking;
+    }
+
+    public void setlTracking(List<Tracking> lTracking) {
+        this.lTracking = lTracking;
+    }
 
     private Singleton(Context context) {
         // Inicializamos los atributos de clase
         mContext = context;
         cManager = new CommMgr();
         lRutas = null;
+        lTracking = null;
     }
 
     /**
@@ -120,17 +140,25 @@ public class Singleton {
     }
 
     /**
+     * escanearBT
      *
-     * @param activity
-     * @param alMACs
+     * @param activity Actividad
+     * @param lBalizas
      * @return
      */
-    public ArrayList<String> escanearBT (Activity activity, ArrayList<String> alMACs) {
+    public void escanearBT (Activity activity, List<Baliza> lBalizas) {
         BluetoothDiscovery BTD;
+        ArrayList<String> alMACs = null;
+
+        // 1 - Recogemos las MAC de la lista de balizas
+        alMACs = this.recuperarMACs(lBalizas);
+
+        // 2 - Instanciamos el Discovery de Bluetooth con la lista de MACs
         BTD = new BluetoothDiscovery(activity, alMACs);
-        alMACs = BTD.getBTAddress();
-        return(alMACs);
     }
+
+
+
 
     /**
      * Trazas
@@ -145,6 +173,24 @@ public class Singleton {
      }
 
 
+    /**
+     * recuperarMACs
+     *
+     * @brief Recupera las MAC Address del array de balizas
+     *
+     * @param lBalizas
+     * @return ArrayList<String>
+     */
+     private  ArrayList<String> recuperarMACs (List<Baliza> lBalizas) {
+         int i;
+         ArrayList<String> alMACs = null;
+
+         // Recorremos el array de Balizas para ir añadiendo las MAC al array
+         for (i=0;i<lBalizas.size();i++) {
+             alMACs.add(lBalizas.get(i).getMac());
+         }
+        return (alMACs);
+     }
 
 
 

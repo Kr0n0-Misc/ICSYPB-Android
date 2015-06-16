@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
@@ -91,8 +92,9 @@ public class CommMgr {
             try {
                 // 1 - Convertimos la cadena en URL
                 url = new URL(urls[0]);
-                // 2 - Establecemos la conexión
+                // 2 - Establecemos la conexión y timeout de 5 segundos
                 httpconn = (HttpURLConnection) url.openConnection();
+                httpconn.setConnectTimeout(5000);
                 // 3 - Leemos el archivo en un buffer
                 input = new BufferedReader(new InputStreamReader(httpconn.getInputStream()), 8192);
                 strLine = null;
@@ -111,6 +113,7 @@ public class CommMgr {
                 e.printStackTrace();
                 return (null);
             }
+
             // 4 - Devolvemos la cadena en formato string
             cadenaJson = response.toString();
             return cadenaJson;

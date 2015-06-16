@@ -1,9 +1,12 @@
 package es.upsam.dsm.icsypb_android.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.util.concurrent.ExecutionException;
@@ -25,7 +28,7 @@ public class SplashScreen extends Activity {
     private static int SPLASH_TIME_OUT = 4000;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
 
         // 1 - Visualizamos el activity
         super.onCreate(savedInstanceState);
@@ -56,13 +59,15 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }
                 Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
-
-                //TODO Si false Mensaje de error con boton OK y salida de aplicación
-
-                // 5 - Cargar el siguiente activity, lanzarlo y cerrar este
-                i = new Intent(SplashScreen.this, RutasActivity.class);
-                startActivity(i);
-                finish();
+                if (bOK) {
+                    // 5 - Cargar el siguiente activity, lanzarlo y cerrar este
+                    i = new Intent(SplashScreen.this, RutasActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                else {
+                    finish();
+                }
             }
         }, SPLASH_TIME_OUT);
     }

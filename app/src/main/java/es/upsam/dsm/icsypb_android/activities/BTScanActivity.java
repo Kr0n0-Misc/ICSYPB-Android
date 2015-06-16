@@ -34,10 +34,10 @@ public class BTScanActivity extends Activity {
         // 4 - Recogemos la lista de Balizas de esa ruta
         lBalizas = datos.getRuta(posicion).getBalizas();
 
-        // 5 - Lanzar Bluetooth
-        /*TODO datos.escanearBT(). Revisar que se pasa el listado de MACs a Singleton
-          y a BluetoothDiscovery para que BluetoothDiscovery haga el filtrado directo.
-          Debe devolver el listado de MAC para ir metiendolo en el ListView!!*/
+        // 5 - Llamamos al controller para que escanee con la lista de MACs
+        datos.escanearBT(this, lBalizas);
+
+
 
     }
 }

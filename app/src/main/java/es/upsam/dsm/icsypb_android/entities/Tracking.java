@@ -17,146 +17,75 @@ package es.upsam.dsm.icsypb_android.entities;
 public class Tracking {
 
     // ATRIBUTOS DE CLASE - CAMPOS DE LA TABLA
-    int id;
-    int id_usuario;
+    String mac_usuario;
+    String mac_baliza;
+    String fecha_actual;
+    int id_baliza;
     int id_ruta;
-    int id_disp;
-    String id_baliza;
-    String fecha;
 
     // CONSTRUCTOR BASE - SIN PARAMETROS
     public Tracking() {
-        this.id = 0;
-        this.id_usuario = 0;
+        this.mac_usuario = "";
+        this.mac_baliza = "";
+        this.fecha_actual = "";
+        this.id_baliza = 0;
         this.id_ruta = 0;
-        this.id_disp = 0;
-        this.id_baliza = "";
-        this.fecha = "";
     }
 
     /**
-     * Tracking - Constructor con parámetros
-     * @param id    Identificador de tracking
-     * @param id_usuario    Identificador de usuario
-     * @param id_ruta   Identificador de ruta
-     * @param id_disp   Identificador de dispositivo
-     * @param id_baliza Identificador de baliza
-     * @param fecha Fecha de grabación
+     * Tracking
+     *
+     * @param mac_usuario
+     * @param mac_baliza
+     * @param fecha_actual
+     * @param id_baliza
+     * @param id_ruta
      */
-    public Tracking(int id, int id_usuario, int id_ruta, int id_disp, String id_baliza, String fecha) {
-        this.id = id;
-        this.id_usuario = id_usuario;
-        this.id_ruta = id_ruta;
-        this.id_disp = id_disp;
+    public Tracking(String mac_usuario, String mac_baliza, String fecha_actual, int id_baliza, int id_ruta) {
+        this.mac_usuario = mac_usuario;
+        this.mac_baliza = mac_baliza;
+        this.fecha_actual = fecha_actual;
         this.id_baliza = id_baliza;
-        this.fecha = fecha;
+        this.id_ruta = id_ruta;
     }
 
-    /**
-     * getId()
-     * @brief   Recupera el atributo Tracking.id
-     * @return  id
-     */
-    public int getId() {
-        return id;
+    public String getMac_usuario() {
+        return mac_usuario;
     }
 
-    /**
-     * setId()
-     * @brief   Establece el atributo Tracking.id
-     * @param id
-     */
-    public void setId(int id) {
-        this.id = id;
+    public void setMac_usuario(String mac_usuario) {
+        this.mac_usuario = mac_usuario;
     }
 
-    /**
-     * getId_usuario()
-     * @brief   Recupera el atributo Tracking.id_usuario
-     * @return  id_usuario
-     */
-    public int getId_usuario() {
-        return id_usuario;
+    public String getMac_baliza() {
+        return mac_baliza;
     }
 
-    /**
-     * setId_usuario()
-     * @brief   Establece el atributo Tracking.id_usuario
-     * @param id_usuario
-     */
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setMac_baliza(String mac_baliza) {
+        this.mac_baliza = mac_baliza;
     }
 
-    /**
-     * getId_ruta()
-     * @brief   Recupera el atributo Tracking.id_ruta
-     * @return  id_ruta
-     */
+    public String getFecha_actual() {
+        return fecha_actual;
+    }
+
+    public void setFecha_actual(String fecha_actual) {
+        this.fecha_actual = fecha_actual;
+    }
+
+    public int getId_baliza() {
+        return id_baliza;
+    }
+
+    public void setId_baliza(int id_baliza) {
+        this.id_baliza = id_baliza;
+    }
+
     public int getId_ruta() {
         return id_ruta;
     }
 
-    /**
-     * setId_ruta()
-     * @brief   Establece el atributo Tracking.id_ruta
-     * @param id_ruta
-     */
     public void setId_ruta(int id_ruta) {
         this.id_ruta = id_ruta;
-    }
-
-    /**
-     * getId_disp()
-     * @brief   Recupera el atributo Tracking.id_disp
-     * @return  id_disp
-     */
-    public int getId_disp() {
-        return id_disp;
-    }
-
-    /**
-     * setId_disp()
-     * @brief   Establece el atributo Tracking.id_disp
-     * @param id_disp
-     */
-    public void setId_disp(int id_disp) {
-        this.id_disp = id_disp;
-    }
-
-    /**
-     * getId_baliza()
-     * @brief   Recupera el atributo Tracking.id_baliza
-     * @return  id_baliza
-     */
-    public String getId_baliza() {
-        return id_baliza;
-    }
-
-    /**
-     * setId_baliza()
-     * @brief   Establece el atributo Tracking.id_baliza
-     * @param id_baliza
-     */
-    public void setId_baliza(String id_baliza) {
-        this.id_baliza = id_baliza;
-    }
-
-    /**
-     * getFecha()
-     * @brief   Recupera el atributo Tracking.fecha
-     * @return  fecha
-     */
-    public String getFecha() {
-        return fecha;
-    }
-
-    /**
-     * setFecha()
-     * @brief   Establece el atributo Tracking.fecha
-     * @param fecha
-     */
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
     }
 }
