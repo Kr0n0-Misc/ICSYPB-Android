@@ -23,7 +23,7 @@ import android.util.Log;
  *
  * Referencias :    http://stackoverflow.com/questions/29122031/how-can-i-show-the-scanned-bluetooth-devices-in-the-listview
  *                  https://github.com/ArcSung/android_arduino_IRStopwatch/blob/master/src/com/arc/android_timer/BluetoothDiscovery.java
- *
+ *                  http://stackoverflow.com/questions/9681103/send-arraylistobject-from-broadcastreceiver-to-activity
  */
 public class BluetoothDiscovery {
     // ATRIBUTOS DE CLASE

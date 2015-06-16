@@ -38,6 +38,8 @@ public class Singleton {
     private CommMgr cManager;
     List<Ruta> lRutas;
     List<Tracking> lTracking;
+    BluetoothDiscovery BTD;
+
 
     private Singleton(Context context) {
         // Inicializamos los atributos de clase
@@ -112,7 +114,6 @@ public class Singleton {
      * @return
      */
     public void escanearBT (Activity activity, List<Baliza> lBalizas) {
-        BluetoothDiscovery BTD;
         ArrayList<String> alMACs = null;
 
         // 1 - Recogemos las MAC de la lista de balizas
@@ -156,6 +157,14 @@ public class Singleton {
          toast.show();
      }
 
+
+    /**************************************
+     *              BYPASS                *
+     **************************************/
+
+    public void stopBTScan () {
+        BTD.stopBTScan();
+    }
 
     /**************************************
      *        GETTERS Y SETTERS           *

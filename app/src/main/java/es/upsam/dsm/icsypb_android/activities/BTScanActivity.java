@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class BTScanActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int posicion;
+        final Button boton;
 
         // 1 - Visualizamos el activity
         super.onCreate(savedInstanceState);
@@ -34,10 +37,18 @@ public class BTScanActivity extends Activity {
         // 4 - Recogemos la lista de Balizas de esa ruta
         lBalizas = datos.getRuta(posicion).getBalizas();
 
-        // 5 - Llamamos al controller para que escanee con la lista de MACs
+        // 5 - Recogemos el boton de parar y le asociamos el método
+        boton = (Button) findViewById(R.id.button);
+        boton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Pulsamos boton
+                datos.stopBTScan();
+            }
+        });
+
+        // 6 - Llamamos al controller para que escanee con la lista de MACs
         datos.escanearBT(this, lBalizas);
-
-
 
     }
 }
