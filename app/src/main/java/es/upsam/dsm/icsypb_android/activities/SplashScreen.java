@@ -49,7 +49,7 @@ public class SplashScreen extends Activity {
                 // 2 - Comprobamos la conexión a Internet
                 bOK = datos.comprobarConexion();
                 Log.d("[SplashScreen]", "comprobarConexion() - Devuelve " + bOK);
-                //TODO Si false Mensaje de error con boton OK y salida de aplicación
+                if (!(bOK)) System.exit(1);
 
                 // 3 - Recibimos las rutas
                 try {
@@ -60,6 +60,7 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }
                 Log.d("[SplashScreen]", "recibirRutas() - Devuelve " + bOK);
+
                 if (bOK) {
                     // 4 - Cargar el siguiente activity, lanzarlo y cerrar este
                     i = new Intent(SplashScreen.this, RutasActivity.class);
@@ -68,7 +69,7 @@ public class SplashScreen extends Activity {
                 }
                 else {
                     // 5 - Salimos de la aplicación
-                    finish();
+                    System.exit(1);
                 }
             }
         }, SPLASH_TIME_OUT);
