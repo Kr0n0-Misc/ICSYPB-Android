@@ -71,7 +71,7 @@ public class BluetoothDiscovery {
                     encontrado = buscarArray(BluetoothArray, mac_actual);
                     if (encontrado = true) {
 
-                    /* Añadimos los campos al objeto Tracking que creemos
+                    /* TODO Añadimos los campos al objeto Tracking
                         String mac_usuario :: ownMAC;
                         String mac_baliza :: mac_actual;
                         String fecha_actual :: fecha_actual=sdf.format(date);;

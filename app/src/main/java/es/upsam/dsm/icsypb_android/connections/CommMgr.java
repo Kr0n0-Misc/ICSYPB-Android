@@ -102,13 +102,11 @@ public class CommMgr {
                 input.close();
             }
             catch (MalformedURLException e) {
-                //TODO Gestión MalformedURLExecption
                 e.printStackTrace();
                 return (null);
             }
             catch (IOException e) {
-                //TODO Gestión IOException
-                e.printStackTrace();
+                  e.printStackTrace();
                 return (null);
             }
 

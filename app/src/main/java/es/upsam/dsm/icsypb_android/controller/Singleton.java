@@ -122,7 +122,7 @@ public class Singleton {
         // 2 - Instanciamos el Discovery de Bluetooth con la lista de MACs
         BTD = new BluetoothDiscovery(activity, alMACs);
 
-        // 3 - TODO
+        // 3 - TODO Recogemos el listado de Tracking?
     }
 
     /**
