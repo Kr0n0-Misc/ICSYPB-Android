@@ -19,10 +19,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PARAR"
+        android:text="EMPEZAR"
         android:id="@+id/button"
         android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
     <ListView
         android:layout_width="wrap_content"

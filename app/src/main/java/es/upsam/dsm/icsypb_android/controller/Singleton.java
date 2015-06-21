@@ -32,8 +32,8 @@ import es.upsam.dsm.icsypb_android.utilities.BluetoothDiscovery;
 public class Singleton {
     // ATRIBUTOS DE CLASE
     private static Singleton mInstance = null;
-    //private static String URL_RUTAS = "http://ctcloud.sytes.net/icsypb/rutas.php";
-    private static String URL_RUTAS = "http://10.172.1.61/ejemplo.json";
+    private static String URL_RUTAS = "http://ctcloud.sytes.net/ejemplo.json";
+    //private static String URL_RUTAS = "http://10.172.1.61/ejemplo.json";
     private Context mContext;
     private CommMgr cManager;
     List<Ruta> lRutas;

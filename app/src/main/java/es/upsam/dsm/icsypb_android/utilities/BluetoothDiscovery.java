@@ -27,6 +27,8 @@ import es.upsam.dsm.icsypb_android.entities.Baliza;
  * Referencias :    http://stackoverflow.com/questions/29122031/how-can-i-show-the-scanned-bluetooth-devices-in-the-listview
  *                  https://github.com/ArcSung/android_arduino_IRStopwatch/blob/master/src/com/arc/android_timer/BluetoothDiscovery.java
  *                  http://stackoverflow.com/questions/9681103/send-arraylistobject-from-broadcastreceiver-to-activity
+ *                  https://androidcookbook.com/Recipe.seam?recipeId=1615&title=Bluetooth%20Device%20discovery
+ *                  http://android-er.blogspot.com.es/2011/05/scan-bluetooth-devices.html
  */
 public class BluetoothDiscovery {
     // ATRIBUTOS DE CLASE
