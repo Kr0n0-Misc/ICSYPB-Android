@@ -33,7 +33,7 @@ public class Singleton {
     // ATRIBUTOS DE CLASE
     private static Singleton mInstance = null;
     private static String URL_RUTAS = "http://ctcloud.sytes.net/ejemplo.json";
-    //private static String URL_RUTAS = "http://10.172.1.61/ejemplo.json";
+    //private static String URL_RUTAS = "http://10.102.82.252/backend/jsonbase";
     private Context mContext;
     private CommMgr cManager;
     List<Ruta> lRutas;

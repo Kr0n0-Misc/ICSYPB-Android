@@ -24,11 +24,12 @@ import es.upsam.dsm.icsypb_android.entities.Baliza;
 
 
 /**
- * BYScanActivity
+ * BTScanActivity
  *
  *
  *
- * Referencias :    http://stackoverflow.com/questions/3285580/how-to-periodically-scan-for-bluetooth-devices-on-android?answertab=oldest#tab-top
+ * Referencias :    http://stackoverflow.com/questions/29122031/how-can-i-show-the-scanned-bluetooth-devices-in-the-listview
+ *                  http://stackoverflow.com/questions/3285580/how-to-periodically-scan-for-bluetooth-devices-on-android?answertab=oldest#tab-top
  *                  http://www.programcreek.com/java-api-examples/index.php?api=android.bluetooth.BluetoothAdapter
  *
  *
@@ -36,7 +37,7 @@ import es.upsam.dsm.icsypb_android.entities.Baliza;
 public class BTScanActivity extends Activity {
     List<Baliza> lBalizas;
     private BluetoothAdapter mBtAdapter;
-
+    private static final int REQUEST_ENABLE_BT = 1; // Necesario para activación
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,14 @@ public class BTScanActivity extends Activity {
         registerReceiver(this.mReceiver_reset, intentFilter_reset);
         IntentFilter intentFilter_scan = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(this.mReceiver_scan, intentFilter_scan);
-
-
         // 2 - Inicializamos el dispositivo Bluetooth y recogemos la MAC
-        mBtAdapter=BluetoothAdapter.getDefaultAdapter();
+        mBtAdapter= BluetoothAdapter.getDefaultAdapter();
         mac_dispositivo = mBtAdapter.getAddress();
+        // 3 - Habilitamos bluetooth si no está habilitado
+        if (!(mBtAdapter.isEnabled())){
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
         // 3 - Visualizamos el activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_btscan);
