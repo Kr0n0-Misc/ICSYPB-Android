@@ -32,12 +32,12 @@ import es.upsam.dsm.icsypb_android.utilities.BluetoothDiscovery;
 public class Singleton {
     // ATRIBUTOS DE CLASE
     private static Singleton mInstance = null;
-    private static String URL_RUTAS = "http://ctcloud.sytes.net/backend/Jsonbase";
-    //private static String URL_RUTAS = "http://10.102.82.252/backend/jsonbase";
+    //private static String URL_RUTAS = "http://ctcloud.sytes.net/backend/Jsonbase";
+    private static String URL_RUTAS = "http://192.168.0.241/backend/Jsonbase";
     private Context mContext;
     private CommMgr cManager;
     List<Ruta> lRutas;
-    List<Tracking> lTracking;
+    Tracking oTracking;
     BluetoothDiscovery BTD;
 
 
@@ -46,7 +46,7 @@ public class Singleton {
         mContext = context;
         cManager = new CommMgr();
         lRutas = new ArrayList<>();
-        lTracking = new ArrayList<>();
+        oTracking = new Tracking();
     }
 
     /**
@@ -154,12 +154,12 @@ public class Singleton {
         return lRutas.get(i);
     }
 
-    public List<Tracking> getlTracking() {
-        return lTracking;
+    public Tracking getoTracking() {
+        return oTracking;
     }
 
-    public void setlTracking(List<Tracking> lTracking) {
-        this.lTracking = lTracking;
+    public void setoTracking(Tracking oTracking) {
+        this.oTracking = new Tracking();
     }
 
     public Context getmContext() {

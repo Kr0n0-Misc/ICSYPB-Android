@@ -16,11 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import es.upsam.dsm.icsypb_android.R;
 import es.upsam.dsm.icsypb_android.controller.Singleton;
 import es.upsam.dsm.icsypb_android.entities.Baliza;
+import es.upsam.dsm.icsypb_android.entities.Tracking;
 
 
 /**
@@ -38,13 +41,17 @@ public class BTScanActivity extends Activity {
     List<Baliza> lBalizas;
     private BluetoothAdapter mBtAdapter;
     private static final int REQUEST_ENABLE_BT = 1; // Necesario para activación
+    private static String mac_dispositivo;
+    SimpleDateFormat sdf;
+    Singleton datos = Singleton.getInstance(this);
+    Tracking tracking;
+    int posicion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int posicion;
         final Button boton;
         final TextView texto;
-        final String mac_dispositivo;
 
         // 1 - Registramos el intent para bluetooth
         IntentFilter intentFilter_reset = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -63,7 +70,7 @@ public class BTScanActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_btscan);
         // 4 - Recogemos Singleton con el contexto de aplicación
-        final Singleton datos = Singleton.getInstance(this);
+        //final Singleton datos = Singleton.getInstance(this);
         // 5 - Recogemos los parámetros desde la otra Activity
         //     RutasActivity(posicion) -> Posicion del array
         Bundle parametros = getIntent().getExtras();
@@ -148,7 +155,7 @@ public class BTScanActivity extends Activity {
                 return (true);
             }
         }
-        return(resultado);
+        return(false);
     }
 
 
@@ -180,20 +187,27 @@ public class BTScanActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            Calendar cal = Calendar.getInstance();
 
             // Si se detecta un dispositivo
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mac_actual = device.getAddress();
                 encontrado = buscarArray(lBalizas, mac_actual);
-                if (encontrado = true) {
+                if (encontrado) {
                     Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
-                    /* TODO Añadimos los campos al objeto Tracking
-                    String mac_usuario :: ownMAC;
-                    String mac_baliza :: mac_actual;
-                    String fecha_actual :: fecha_actual=sdf.format(date);;
-                    int id_baliza :: ;
-                    int id_ruta; */
+                    Log.v("[BTScan]", "MAC EQUIPO" + mac_dispositivo);
+                    // Instanciamos nuevo objeto Tracking
+                    tracking = new Tracking();
+                    tracking.setMac_usuario(mac_dispositivo);
+                    tracking.setId_ruta(datos.getRuta(posicion).getId());
+                    //tracking.setId_baliza();
+                    tracking.setMac_baliza(mac_actual);
+                    sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                    String strDate = sdf.format(cal.getTime());
+                    tracking.setFecha(strDate.toString());
+                    //tracking.setIdtrackpub();
+                    //TODO Meter en BBDD
                 }
             }
         }

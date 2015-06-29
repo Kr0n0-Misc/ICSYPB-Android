@@ -22,7 +22,7 @@ public class Baliza {
     String mac;
     int posicion;
     int id_contacto;
-    Boolean estropeado;
+    int estropeado;
     String mail;
 
     // CONSTRUCTOR BASE - SIN PARAMETROS
@@ -32,7 +32,7 @@ public class Baliza {
         this.mac = "";
         this.posicion = 0;
         this.id_contacto = 0;
-        this.estropeado = false;
+        this.estropeado = 0;
         this.mail = "";
     }
 
@@ -48,7 +48,7 @@ public class Baliza {
      * @param estropeado    Flag si estropeado o no
      * @param mail  Correo de la baliza
      */
-    public Baliza(int id, String texto, String mac, int posicion, int id_contacto, Boolean estropeado, String mail) {
+    public Baliza(int id, String texto, String mac, int posicion, int id_contacto, int estropeado, String mail) {
         this.id = id;
         this.texto = texto;
         this.mac = mac;
@@ -102,11 +102,11 @@ public class Baliza {
         this.id_contacto = id_contacto;
     }
 
-    public Boolean getEstropeado() {
+    public int getEstropeado() {
         return estropeado;
     }
 
-    public void setEstropeado(Boolean estropeado) {
+    public void setEstropeado(int estropeado) {
         this.estropeado = estropeado;
     }
 
