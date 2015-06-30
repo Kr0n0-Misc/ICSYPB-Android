@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,7 @@ import es.upsam.dsm.icsypb_android.R;
 import es.upsam.dsm.icsypb_android.controller.Singleton;
 import es.upsam.dsm.icsypb_android.entities.Baliza;
 import es.upsam.dsm.icsypb_android.entities.Tracking;
+import es.upsam.dsm.icsypb_android.models.ICSYPBSQLiteHelper;
 
 
 /**
@@ -46,6 +49,8 @@ public class BTScanActivity extends Activity {
     Singleton datos = Singleton.getInstance(this);
     Tracking tracking;
     int posicion;
+    SQLiteDatabase db;
+    ICSYPBSQLiteHelper icsyph;
 
 
     @Override
@@ -69,10 +74,10 @@ public class BTScanActivity extends Activity {
         // 3 - Visualizamos el activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_btscan);
-        // 4 - Recogemos Singleton con el contexto de aplicación
-        //final Singleton datos = Singleton.getInstance(this);
+        // 4 - Instanciamos la base de datos en modo escritura
+        icsyph = new ICSYPBSQLiteHelper(this, "ICSYPBDB", null, 1);
+        db = icsyph.getWritableDatabase();
         // 5 - Recogemos los parámetros desde la otra Activity
-        //     RutasActivity(posicion) -> Posicion del array
         Bundle parametros = getIntent().getExtras();
         posicion = parametros.getInt("posicion");
         // 6 - Recogemos la lista de Balizas de esa ruta
@@ -121,6 +126,8 @@ public class BTScanActivity extends Activity {
                     boton.setEnabled(false);
                     texto.setText("Seleccione los puntos y pulse guardar");
                     boton.setText("GUARDAR");
+
+                    db.close();
                     //TODO PROPAGAR MAC
                 }
 
@@ -189,6 +196,10 @@ public class BTScanActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Calendar cal = Calendar.getInstance();
+            // Campos auxiliares para BBDD
+            String sMAC_USUARIO, sMAC_BALIZA, sFECHA, sIDTRACKPUB;
+            int iID_RUTA, iID_BALIZA;
+
 
             // Si se detecta un dispositivo
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
@@ -199,26 +210,24 @@ public class BTScanActivity extends Activity {
 
                     // BALIZA ENCONTRADA - RECUPERAMOS LOS DATOS
                     Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
-                    // Instanciamos nuevo objeto Tracking
-                    tracking = new Tracking();
-                    // MAC del usuario como ID
-                    tracking.setMac_usuario(mac_dispositivo);
-                    // ID de la ruta
-                    tracking.setId_ruta(datos.getRuta(posicion).getId());
-                    // ID de la baliza
-                    tracking.setId_baliza(id_baliza);
-                    // MAC de la baliza
-                    tracking.setMac_baliza(mac_actual);
-                    // Fecha actual en el formato dd/MM/yyyy hh:mm:ss
+
+                    // Recogemos los datos usando los campos auxiliares
+                    sMAC_USUARIO = mac_dispositivo;
+                    iID_RUTA = datos.getRuta(posicion).getId();
+                    iID_BALIZA = id_baliza;
+                    sMAC_BALIZA = mac_actual;
                     sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                    String strDate = sdf.format(cal.getTime());
-                    tracking.setFecha(strDate);
-                    // ID Tracking publico nulo inicialmente
-                    tracking.setIdtrackpub(null);
+                    sFECHA = sdf.format(cal.getTime());
 
-                    // METEMOS LOS DATOS EN LA BBDD
+                    // Insertamos los datos en la BBDD
+                    try {
 
-
+                        db.execSQL("INSERT INTO Tracking (MAC_USUARIO, ID_RUTA, ID_BALIZA, MAC_BALIZA, FECHA, IDTRACKPUB) " +
+                                        "VALUES ('" + sMAC_USUARIO + "','" + iID_RUTA + "','" + iID_BALIZA + "','" + sMAC_BALIZA + "','" + sFECHA + "'," + null + ")"
+                        );
+                    } catch (SQLException e) {
+                        Log.v ("[BTScanActivity]", "Error en SQLite");
+                    }
                 }
             }
         }

@@ -4,12 +4,14 @@ package es.upsam.dsm.icsypb_android.models;
 
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class ICSYPBSQLiteHelper extends SQLiteOpenHelper {
     String sqlCreate = "CREATE TABLE Tracking (" +
-            "IDTRACK INT, " +           // IDTRACK INT(6) NOT NULL
+            "IDTRACK INTEGER PRIMARY KEY, " +           // IDTRACK INT(6) NOT NULL
             "MAC_USUARIO TEXT, " +      // MAC_USUARIO VARCHAR(20) NOT NULL
             "ID_RUTA INT, " +           // ID_RUTA INT(11) NOT NULL
             "ID_BALIZA INT, " +         // ID_BALIZA INT(11) NOT NULL
@@ -27,16 +29,25 @@ public class ICSYPBSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        // Creamos la tabla si no está creada
-        sqLiteDatabase.execSQL(sqlCreate);
+        try {
+            // Creamos la tabla si no está creada
+            sqLiteDatabase.execSQL(sqlCreate);
+        } catch (SQLException e) {
+            Log.v("[ICSYPBSQLiteHelper]", "Error en la creación de la base de datos.");
+        }
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        // Borramos la tabla anterior
-        sqLiteDatabase.execSQL(sqlDrop);
-        // Creamos la tabla de nuevo
-        sqLiteDatabase.execSQL(sqlCreate);
+
+        try {
+            // Borramos la tabla anterior
+            sqLiteDatabase.execSQL(sqlDrop);
+            // Creamos la tabla de nuevo
+            sqLiteDatabase.execSQL(sqlCreate);
+        } catch (SQLException e) {
+            Log.v("[ICSYPBSQLiteHelper]", "Error en el update de la base de datos.");
+        }
     }
 }
