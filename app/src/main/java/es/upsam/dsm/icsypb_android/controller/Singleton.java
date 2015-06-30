@@ -1,7 +1,6 @@
 package es.upsam.dsm.icsypb_android.controller;
 
 // Importamos las clases de aplicación que vamos a utilizar desde el singleton
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,7 +15,6 @@ import es.upsam.dsm.icsypb_android.entities.*;
 // Importamos las clases de conector y utilidades
 import es.upsam.dsm.icsypb_android.connections.CommMgr;
 import es.upsam.dsm.icsypb_android.utilities.GSONUtil;
-import es.upsam.dsm.icsypb_android.utilities.BluetoothDiscovery;
 
 /**
  * Singleton
@@ -39,8 +37,6 @@ public class Singleton {
     public List<Ruta> lRutas;
     public List<Tracking> lTracking;
     public Tracking tracking;
-    BluetoothDiscovery BTD;
-
 
     private Singleton(Context context) {
         // Inicializamos los atributos de clase
@@ -108,20 +104,6 @@ public class Singleton {
         }
     }
 
-    /**
-     * escanearBT
-     *
-     * @param activity Actividad
-     * @param lBalizas
-     * @return
-     */
-    public void escanearBT (Activity activity, List<Baliza> lBalizas) {
-        // 2 - Instanciamos el Discovery de Bluetooth con la lista de MACs
-        BTD = new BluetoothDiscovery(activity, lBalizas);
-
-        // 3 - TODO Recogemos el listado de Tracking?
-    }
-
 
     /**
      * Trazas
@@ -135,19 +117,9 @@ public class Singleton {
          toast.show();
      }
 
-
-    /**************************************
-     *              BYPASS                *
-     **************************************/
-
-    public void stopBTScan () {
-        BTD.stopBTScan();
-    }
-
     /**************************************
      *        GETTERS Y SETTERS           *
      **************************************/
-
 
     public List<Tracking> getlTracking() {
         return lTracking;
