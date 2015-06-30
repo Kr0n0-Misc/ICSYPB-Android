@@ -18,9 +18,9 @@ package es.upsam.dsm.icsypb_android.entities;
 public class Baliza {
     // ATRIBUTOS DE CLASE - CAMPOS DE LA TABLA
     int id;
-    String texto;
+    String texto_id;
     String mac;
-    int posicion;
+    String posicion;
     int id_contacto;
     int estropeado;
     String mail;
@@ -28,9 +28,9 @@ public class Baliza {
     // CONSTRUCTOR BASE - SIN PARAMETROS
     public Baliza() {
         this.id = 0;
-        this.texto = "";
+        this.texto_id = "";
         this.mac = "";
-        this.posicion = 0;
+        this.posicion = "";
         this.id_contacto = 0;
         this.estropeado = 0;
         this.mail = "";
@@ -48,9 +48,9 @@ public class Baliza {
      * @param estropeado    Flag si estropeado o no
      * @param mail  Correo de la baliza
      */
-    public Baliza(int id, String texto, String mac, int posicion, int id_contacto, int estropeado, String mail) {
+    public Baliza(int id, String texto, String mac, String posicion, int id_contacto, int estropeado, String mail) {
         this.id = id;
-        this.texto = texto;
+        this.texto_id = texto;
         this.mac = mac;
         this.posicion = posicion;
         this.id_contacto = id_contacto;
@@ -71,11 +71,11 @@ public class Baliza {
     }
 
     public String getTexto() {
-        return texto;
+        return texto_id;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setTexto(String texto_id) {
+        this.texto_id = texto_id;
     }
 
     public String getMac() {
@@ -86,11 +86,11 @@ public class Baliza {
         this.mac = mac;
     }
 
-    public int getPosicion() {
+    public String getPosicion() {
         return posicion;
     }
 
-    public void setPosicion(int posicion) {
+    public void setPosicion(String posicion) {
         this.posicion = posicion;
     }
 

@@ -1,14 +1,19 @@
 package es.upsam.dsm.icsypb_android.models;
 
-// https://www.sqlite.org/datatype3.html
-
-
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
+/**
+ *
+ *
+ * Referencias :        https://www.sqlite.org/datatype3.html
+ *                      http://www.sgoliver.net/blog/bases-de-datos-en-android-i-primeros-pasos/
+ *
+ */
 public class ICSYPBSQLiteHelper extends SQLiteOpenHelper {
     String sqlCreate = "CREATE TABLE Tracking (" +
             "IDTRACK INTEGER PRIMARY KEY, " +           // IDTRACK INT(6) NOT NULL
@@ -16,6 +21,8 @@ public class ICSYPBSQLiteHelper extends SQLiteOpenHelper {
             "ID_RUTA INT, " +           // ID_RUTA INT(11) NOT NULL
             "ID_BALIZA INT, " +         // ID_BALIZA INT(11) NOT NULL
             "MAC_BALIZA TEXT, " +       // MAC_BALIZA VARCHAR(20) NOT NULL
+            "DESC_BALIZA TEXT," +       // TEXTO_ID
+            "POSICION," +               // POSICION
             "FECHA TEXT, " +            // FECHA VARCHAR(30) NOT NULL
             "IDTRACKPUB TEXT " +        // IDTRACKPUB VARCHAR(100)
             ")";

@@ -46,7 +46,7 @@ public class RutasAdapter extends ArrayAdapter<Ruta>{
         // 5 - Pasamos los parámetros al XML como cadenas
         tvRutaId.setText(iRuta.toString());
         tvRutaDesc.setText(sDescripcion);
-        // 5 - Devolvemos la vista completa con los datos ya puestos
+        // 6 - Devolvemos la vista completa con los datos ya puestos
         return convertView;
     }
 }

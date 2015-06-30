@@ -1,6 +1,7 @@
 package es.upsam.dsm.icsypb_android.activities;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -15,14 +16,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import es.upsam.dsm.icsypb_android.R;
+import es.upsam.dsm.icsypb_android.adapters.TrackingAdapter;
 import es.upsam.dsm.icsypb_android.controller.Singleton;
 import es.upsam.dsm.icsypb_android.entities.Baliza;
 import es.upsam.dsm.icsypb_android.entities.Tracking;
@@ -40,22 +46,23 @@ import es.upsam.dsm.icsypb_android.models.ICSYPBSQLiteHelper;
  *
  *
  */
-public class BTScanActivity extends Activity {
+public class BTScanActivity extends ListActivity {
     List<Baliza> lBalizas;
     private BluetoothAdapter mBtAdapter;
     private static final int REQUEST_ENABLE_BT = 1; // Necesario para activación
     private static String mac_dispositivo;
     SimpleDateFormat sdf;
     Singleton datos = Singleton.getInstance(this);
-    Tracking tracking;
     int posicion;
+    Tracking tracking = new Tracking();
     SQLiteDatabase db;
     ICSYPBSQLiteHelper icsyph;
+    ArrayList<String> macs_registradas = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final Button boton;
+        final Button boton, historico;
         final TextView texto;
 
         // 1 - Registramos el intent para bluetooth
@@ -85,6 +92,21 @@ public class BTScanActivity extends Activity {
         // 7 - Recogemos el boton y el texto
         boton = (Button) findViewById(R.id.button);
         texto = (TextView) findViewById(R.id.textView2);
+        historico = (Button) findViewById(R.id.button2);
+
+        /*
+        TODO Implementar clase Historico para visualizar resultados de BBDD
+        historico.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent i = new Intent(BTScanActivity.this, Historico.class);
+                 i.putExtra("posicion", position);
+                 startActivity(i);
+             }
+         }
+        );
+        */
+
         // 8 - Asociamos el método al botón
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +121,6 @@ public class BTScanActivity extends Activity {
                 - Cambiamos el texto del botón a PARAR
                 */
                 if (bTexto.equals("EMPEZAR")) {
-                    //datos.escanearBT(this, lBalizas);
-                    // TODO
                     mBtAdapter.startDiscovery();
                     // Cambiamos el botón a PARAR
                     texto.setText("Pulse el botón PARAR cuando termine");
@@ -111,7 +131,7 @@ public class BTScanActivity extends Activity {
                    ---------
                 - Paramos el bluetooth
                 - Desregistramos el broadcast receiver
-                - Registramos los datos en la BBDD
+                - Registramos los datos en la BBDD -> ESTO LO HACE EL BROADCAST RECEIVER YA!!
                 - Rellenamos el ListView con los datos de la BBDD (nuevos y antiguos)
                 - Cambiamos el texto principal y el del botón a GUARDAR
                 - Deshabilitamos el botón hasta que el onClick del ListView lo active (si hay alguno seleccionado)
@@ -123,12 +143,28 @@ public class BTScanActivity extends Activity {
                     // 2 - Desregistramos el BroadcastReceiver bluetooth
                     getBaseContext().unregisterReceiver(mReceiver_reset);
                     getBaseContext().unregisterReceiver(mReceiver_scan);
-                    boton.setEnabled(false);
+
+                    //boton.setEnabled(false);
                     texto.setText("Seleccione los puntos y pulse guardar");
                     boton.setText("GUARDAR");
+                    historico.setVisibility(View.VISIBLE);
+                    historico.setClickable(true);
 
+                    TrackingAdapter adapter = new TrackingAdapter(datos.getmContext(), R.layout.activity_btscan, datos.lTracking);
+                    ListView lv = getListView();
+                    // 5 - Asociamos el adapter con el listview
+                    lv.setAdapter(adapter);
+                    lv.setClickable(true);
+                    /*
+                    TODO Lanzar activity con vista de detalle de horas
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        }
+                    });
+                    */
                     db.close();
-                    //TODO PROPAGAR MAC
                 }
 
                 /* 3 - GUARDAR
@@ -158,15 +194,34 @@ public class BTScanActivity extends Activity {
         for (int i=0;i<lBalizas.size();i++) {
             mac = lBalizas.get(i).getMac();
             if (mac.equalsIgnoreCase(cadena)) {
-                // Devuelve el identificador de la baliza
-                return (lBalizas.get(i).getId());
+                // Devuelve la posición de la baliza encontrada
+                return (i);
             }
         }
-        // Devuelve 0 si no la ha encontrado
-        return(0);
+        // Devuelve Integer.MAX_VALUE si no la ha encontrado
+        return(Integer.MAX_VALUE);
     }
 
+    /**
+     *
+     * @param macs_registradas
+     * @param cadena
+     * @return
+     */
+    public boolean buscarMACRegistrada(ArrayList<String> macs_registradas, String cadena) {
+        String mac;
 
+        // 1 - Recorremos el ArrayList de macs_registradas
+        for (int i = 0; i < macs_registradas.size(); i++) {
+            mac = macs_registradas.get(i);
+            if (mac.equalsIgnoreCase(cadena)) {
+                // Es igual la MAC, por lo que la filtramos y devolvemos FALSE
+                return false;
+            }
+        }
+        // No está filtrada, devolvemos true
+        return true;
+    }
 
 
     /**
@@ -179,6 +234,8 @@ public class BTScanActivity extends Activity {
             String action = intent.getAction();
 
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.v("[BTScan]", "Borrando filtro de MACs registradas");
+                macs_registradas.clear();
                 Log.v("[BTScan]", "Reiniciando discover");
                 mBtAdapter.startDiscovery();
                 }
@@ -190,44 +247,70 @@ public class BTScanActivity extends Activity {
      */
     public final BroadcastReceiver mReceiver_scan = new BroadcastReceiver() {
         int id_baliza;
+        int pos_array_baliza;
         String mac_actual;
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Calendar cal = Calendar.getInstance();
-            // Campos auxiliares para BBDD
-            String sMAC_USUARIO, sMAC_BALIZA, sFECHA, sIDTRACKPUB;
-            int iID_RUTA, iID_BALIZA;
-
+            sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
             // Si se detecta un dispositivo
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mac_actual = device.getAddress();
-                id_baliza = buscarArray(lBalizas, mac_actual);
-                if (id_baliza != 0) {
+                pos_array_baliza = buscarArray(lBalizas, mac_actual);
 
-                    // BALIZA ENCONTRADA - RECUPERAMOS LOS DATOS
-                    Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
+                // Si la MAC pertenece a la ruta seleccionada
+                if (pos_array_baliza != Integer.MAX_VALUE)
+                {
+                    //TRUE solo si la MAC no está registrada
+                    if (buscarMACRegistrada(macs_registradas, mac_actual)) {
 
-                    // Recogemos los datos usando los campos auxiliares
-                    sMAC_USUARIO = mac_dispositivo;
-                    iID_RUTA = datos.getRuta(posicion).getId();
-                    iID_BALIZA = id_baliza;
-                    sMAC_BALIZA = mac_actual;
-                    sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-                    sFECHA = sdf.format(cal.getTime());
+                        // BALIZA ENCONTRADA - RECUPERAMOS LOS DATOS
+                        Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
+                        // Rellenamos el objeto tracking
+                        tracking.setMac_usuario(mac_dispositivo);
+                        tracking.setId_ruta(datos.getRuta(posicion).getId());
+                        tracking.setId_baliza(lBalizas.get(pos_array_baliza).getId());
+                        tracking.setDesc_baliza(lBalizas.get(pos_array_baliza).getTexto());
+                        tracking.setMac_baliza(mac_actual);
+                        tracking.setFecha(sdf.format(cal.getTime()));
+                        tracking.setPosicion(lBalizas.get(pos_array_baliza).getPosicion());
 
-                    // Insertamos los datos en la BBDD
-                    try {
+                        // Añadimos el objeto al singleton
+                        datos.lTracking.add(tracking);
 
-                        db.execSQL("INSERT INTO Tracking (MAC_USUARIO, ID_RUTA, ID_BALIZA, MAC_BALIZA, FECHA, IDTRACKPUB) " +
-                                        "VALUES ('" + sMAC_USUARIO + "','" + iID_RUTA + "','" + iID_BALIZA + "','" + sMAC_BALIZA + "','" + sFECHA + "'," + null + ")"
-                        );
-                    } catch (SQLException e) {
-                        Log.v ("[BTScanActivity]", "Error en SQLite");
+                        // Insertamos los datos en la BBDD
+                        try {
+                            db.execSQL("INSERT INTO Tracking (" +
+                                            "MAC_USUARIO, " +
+                                            "ID_RUTA, " +
+                                            "ID_BALIZA, " +
+                                            "MAC_BALIZA, " +
+                                            "DESC_BALIZA, " +
+                                            "POSICION, " +
+                                            "FECHA, " +
+                                            "IDTRACKPUB" +
+                                            ") " +
+                                            "VALUES ('" +
+                                            "" + tracking.getMac_usuario() + "'," +
+                                            "'" + tracking.getId_ruta() + "'," +
+                                            "'" + tracking.getId_baliza() + "'," +
+                                            "'" + tracking.getMac_baliza() + "'," +
+                                            "'" + tracking.getDesc_baliza() + "'," +
+                                            "'" + tracking.getPosicion() + "'," +
+                                            "'" + tracking.getFecha() + "'," +
+                                            "" + null + ")"
+                            );
+                        } catch (SQLException e) {
+                            Log.v ("[BTScanActivity]", "Error en SQLite");
+                        }
+                        // Añadimos la MAC al array de existentes para filtrar en posteriores busquedas
+                        macs_registradas.add(mac_actual);
                     }
+
                 }
             }
         }

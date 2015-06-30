@@ -36,8 +36,10 @@ public class Singleton {
     private static String URL_RUTAS = "http://192.168.0.241/backend/Jsonbase";
     private Context mContext;
     private CommMgr cManager;
-    List<Ruta> lRutas;
-    public Tracking oTracking;
+    public List<Ruta> lRutas;
+    public List<Tracking> lTracking;
+    public Tracking tracking;
+    public TrackingAux tracking_aux;
     BluetoothDiscovery BTD;
 
 
@@ -46,7 +48,9 @@ public class Singleton {
         mContext = context;
         cManager = new CommMgr();
         lRutas = new ArrayList<>();
-        oTracking = new Tracking();
+        lTracking = new ArrayList<>();
+        tracking = new Tracking();
+        tracking_aux = new TrackingAux();
     }
 
     /**
@@ -142,17 +146,17 @@ public class Singleton {
         BTD.stopBTScan();
     }
 
-
     /**************************************
      *        GETTERS Y SETTERS           *
      **************************************/
 
-    public Tracking getoTracking() {
-        return oTracking;
+
+    public List<Tracking> getlTracking() {
+        return lTracking;
     }
 
-    public void setoTracking(Tracking oTracking) {
-        this.oTracking = oTracking;
+    public void setlTracking(List<Tracking> lTracking) {
+        this.lTracking = lTracking;
     }
 
     public List<Ruta> getlRutas() {

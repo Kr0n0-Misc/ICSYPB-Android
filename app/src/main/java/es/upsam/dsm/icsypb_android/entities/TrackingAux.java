@@ -1,59 +1,41 @@
 package es.upsam.dsm.icsypb_android.entities;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Tracking
- *
- * @brief Clase Entity para gestionar la tabla tracking
- * @author Kr0n0
- *
- * CREATE TABLE IF NOT EXISTS `tracking` (
-    ID_TRACK -> Automático
-    MAC_USUARIO : mac_dispositivo
-    ID_RUTA -> datos.getRuta(posicion).getId();
-    ID_BALIZA -> Modificar buscarArray para que devuelva el ID de la baliza (salida si NULL)
-    MAC_BALIZA -> mac_actual
-    FECHA -> private sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-    IDTRACKPUB -> generado a posteriori segun seleccion del usuario
- */
-public class Tracking {
+public class TrackingAux {
 
-    // ATRIBUTOS DE CLASE - CAMPOS DE LA TABLA
     String mac_usuario;
     int id_ruta;
     int id_baliza;
     String mac_baliza;
-    String desc_baliza;
-    String posicion;
-    String fecha;
+    List<String> fecha;
     String idtrackpub;
+    String posicion;
+    String desc_baliza;
 
-     public Tracking() {
-         this.mac_usuario = null;
-         this.id_ruta = 0;
-         this.id_baliza = 0;
-         this.mac_baliza = null;
-         this.desc_baliza = null;
-         this.posicion = null;
-         this.fecha = null;
-         this.idtrackpub = null;
+    public TrackingAux() {
+        this.mac_usuario = null;
+        this.id_ruta = 0;
+        this.id_baliza = 0;
+        this.mac_baliza = null;
+        this.fecha = new ArrayList<>();
+        this.idtrackpub = null;
+        this.posicion = null;
+        this.desc_baliza = null;
     }
 
-    public Tracking(String mac_usuario, int id_ruta, int id_baliza, String mac_baliza, String desc_baliza, String fecha, String idtrackpub, String posicion) {
+    public TrackingAux(String mac_usuario, int id_ruta, int id_baliza, String mac_baliza, List<String> fecha, String idtrackpub, String posicion, String desc_baliza) {
         this.mac_usuario = mac_usuario;
         this.id_ruta = id_ruta;
         this.id_baliza = id_baliza;
         this.mac_baliza = mac_baliza;
-        this.desc_baliza = desc_baliza;
-        this.posicion = posicion;
         this.fecha = fecha;
         this.idtrackpub = idtrackpub;
+        this.posicion = posicion;
+        this.desc_baliza = desc_baliza;
     }
 
-    /****************************************
-     Getters y Setters de los campos
-     ****************************************/
 
     public String getMac_usuario() {
         return mac_usuario;
@@ -87,11 +69,11 @@ public class Tracking {
         this.mac_baliza = mac_baliza;
     }
 
-    public String getFecha() {
+    public List<String> getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(List<String> fecha) {
         this.fecha = fecha;
     }
 
@@ -118,5 +100,4 @@ public class Tracking {
     public void setDesc_baliza(String desc_baliza) {
         this.desc_baliza = desc_baliza;
     }
-
 }
