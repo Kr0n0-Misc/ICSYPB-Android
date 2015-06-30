@@ -39,7 +39,6 @@ public class Singleton {
     public List<Ruta> lRutas;
     public List<Tracking> lTracking;
     public Tracking tracking;
-    public TrackingAux tracking_aux;
     BluetoothDiscovery BTD;
 
 
@@ -50,7 +49,6 @@ public class Singleton {
         lRutas = new ArrayList<>();
         lTracking = new ArrayList<>();
         tracking = new Tracking();
-        tracking_aux = new TrackingAux();
     }
 
     /**
