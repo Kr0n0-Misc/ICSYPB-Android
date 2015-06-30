@@ -93,19 +93,15 @@ public class BTScanActivity extends ListActivity {
         boton = (Button) findViewById(R.id.button);
         texto = (TextView) findViewById(R.id.textView2);
         historico = (Button) findViewById(R.id.button2);
-
-        /*
-        TODO Implementar clase Historico para visualizar resultados de BBDD
         historico.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 Intent i = new Intent(BTScanActivity.this, Historico.class);
-                 i.putExtra("posicion", position);
+                 Intent i = new Intent(BTScanActivity.this, HistoricoActivity.class);
+                 //i.putExtra("posicion", position);
                  startActivity(i);
              }
          }
         );
-        */
 
         // 8 - Asociamos el método al botón
         boton.setOnClickListener(new View.OnClickListener() {
@@ -273,6 +269,7 @@ public class BTScanActivity extends ListActivity {
                         // Rellenamos el objeto tracking
                         tracking.setMac_usuario(mac_dispositivo);
                         tracking.setId_ruta(datos.getRuta(posicion).getId());
+                        tracking.setDesc_ruta(datos.getRuta(posicion).getDescripcion());
                         tracking.setId_baliza(lBalizas.get(pos_array_baliza).getId());
                         tracking.setDesc_baliza(lBalizas.get(pos_array_baliza).getTexto());
                         tracking.setMac_baliza(mac_actual);
@@ -287,6 +284,7 @@ public class BTScanActivity extends ListActivity {
                             db.execSQL("INSERT INTO Tracking (" +
                                             "MAC_USUARIO, " +
                                             "ID_RUTA, " +
+                                            "DESC_RUTA, " +
                                             "ID_BALIZA, " +
                                             "MAC_BALIZA, " +
                                             "DESC_BALIZA, " +
@@ -297,6 +295,7 @@ public class BTScanActivity extends ListActivity {
                                             "VALUES ('" +
                                             "" + tracking.getMac_usuario() + "'," +
                                             "'" + tracking.getId_ruta() + "'," +
+                                            "'" + tracking.getDesc_ruta() + "'," +
                                             "'" + tracking.getId_baliza() + "'," +
                                             "'" + tracking.getMac_baliza() + "'," +
                                             "'" + tracking.getDesc_baliza() + "'," +

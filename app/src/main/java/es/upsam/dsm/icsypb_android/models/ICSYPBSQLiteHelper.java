@@ -19,6 +19,7 @@ public class ICSYPBSQLiteHelper extends SQLiteOpenHelper {
             "IDTRACK INTEGER PRIMARY KEY, " +           // IDTRACK INT(6) NOT NULL
             "MAC_USUARIO TEXT, " +      // MAC_USUARIO VARCHAR(20) NOT NULL
             "ID_RUTA INT, " +           // ID_RUTA INT(11) NOT NULL
+            "DESC_RUTA TEXT, " +        // DESC_RUTA STRING (11) NOT NULL
             "ID_BALIZA INT, " +         // ID_BALIZA INT(11) NOT NULL
             "MAC_BALIZA TEXT, " +       // MAC_BALIZA VARCHAR(20) NOT NULL
             "DESC_BALIZA TEXT," +       // TEXTO_ID

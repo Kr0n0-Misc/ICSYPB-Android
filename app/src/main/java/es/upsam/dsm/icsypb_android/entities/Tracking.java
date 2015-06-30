@@ -22,6 +22,7 @@ public class Tracking {
     // ATRIBUTOS DE CLASE - CAMPOS DE LA TABLA
     String mac_usuario;
     int id_ruta;
+    String desc_ruta;
     int id_baliza;
     String mac_baliza;
     String desc_baliza;
@@ -32,6 +33,7 @@ public class Tracking {
      public Tracking() {
          this.mac_usuario = null;
          this.id_ruta = 0;
+         this.desc_ruta = null;
          this.id_baliza = 0;
          this.mac_baliza = null;
          this.desc_baliza = null;
@@ -40,9 +42,10 @@ public class Tracking {
          this.idtrackpub = null;
     }
 
-    public Tracking(String mac_usuario, int id_ruta, int id_baliza, String mac_baliza, String desc_baliza, String fecha, String idtrackpub, String posicion) {
+    public Tracking(String mac_usuario, int id_ruta, String desc_ruta, int id_baliza, String mac_baliza, String desc_baliza, String fecha, String idtrackpub, String posicion) {
         this.mac_usuario = mac_usuario;
         this.id_ruta = id_ruta;
+        this.desc_ruta = desc_ruta;
         this.id_baliza = id_baliza;
         this.mac_baliza = mac_baliza;
         this.desc_baliza = desc_baliza;
@@ -69,6 +72,14 @@ public class Tracking {
 
     public void setId_ruta(int id_ruta) {
         this.id_ruta = id_ruta;
+    }
+
+    public String getDesc_ruta() {
+        return desc_ruta;
+    }
+
+    public void setDesc_ruta(String desc_ruta) {
+        this.desc_ruta = desc_ruta;
     }
 
     public int getId_baliza() {

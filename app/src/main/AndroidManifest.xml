@@ -40,6 +40,10 @@
             android:name=".activities.BTScanActivity"
             android:label="@string/title_activity_btscan" >
         </activity>
+        <activity
+            android:name=".activities.HistoricoActivity"
+            android:label="@string/title_activity_historico" >
+        </activity>
     </application>
 
 </manifest>
