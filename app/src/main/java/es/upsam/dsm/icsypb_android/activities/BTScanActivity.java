@@ -144,18 +144,19 @@ public class BTScanActivity extends Activity {
      * @param cadena
      * @return
      */
-    public boolean buscarArray(List<Baliza> lBalizas, String cadena) {
-        boolean resultado = false;
+    public int buscarArray(List<Baliza> lBalizas, String cadena) {
         String mac;
 
         // 1 - Recorremos el ArrayList de lBalizas
         for (int i=0;i<lBalizas.size();i++) {
             mac = lBalizas.get(i).getMac();
             if (mac.equalsIgnoreCase(cadena)) {
-                return (true);
+                // Devuelve el identificador de la baliza
+                return (lBalizas.get(i).getId());
             }
         }
-        return(false);
+        // Devuelve 0 si no la ha encontrado
+        return(0);
     }
 
 
@@ -181,7 +182,7 @@ public class BTScanActivity extends Activity {
      *
      */
     public final BroadcastReceiver mReceiver_scan = new BroadcastReceiver() {
-        Boolean encontrado = false;
+        int id_baliza;
         String mac_actual;
 
         @Override
@@ -193,21 +194,31 @@ public class BTScanActivity extends Activity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mac_actual = device.getAddress();
-                encontrado = buscarArray(lBalizas, mac_actual);
-                if (encontrado) {
+                id_baliza = buscarArray(lBalizas, mac_actual);
+                if (id_baliza != 0) {
+
+                    // BALIZA ENCONTRADA - RECUPERAMOS LOS DATOS
                     Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
-                    Log.v("[BTScan]", "MAC EQUIPO" + mac_dispositivo);
                     // Instanciamos nuevo objeto Tracking
                     tracking = new Tracking();
+                    // MAC del usuario como ID
                     tracking.setMac_usuario(mac_dispositivo);
+                    // ID de la ruta
                     tracking.setId_ruta(datos.getRuta(posicion).getId());
-                    //tracking.setId_baliza();
+                    // ID de la baliza
+                    tracking.setId_baliza(id_baliza);
+                    // MAC de la baliza
                     tracking.setMac_baliza(mac_actual);
+                    // Fecha actual en el formato dd/MM/yyyy hh:mm:ss
                     sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
                     String strDate = sdf.format(cal.getTime());
-                    tracking.setFecha(strDate.toString());
-                    //tracking.setIdtrackpub();
-                    //TODO Meter en BBDD
+                    tracking.setFecha(strDate);
+                    // ID Tracking publico nulo inicialmente
+                    tracking.setIdtrackpub(null);
+
+                    // METEMOS LOS DATOS EN LA BBDD
+
+
                 }
             }
         }

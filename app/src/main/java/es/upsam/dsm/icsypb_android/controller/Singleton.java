@@ -37,7 +37,7 @@ public class Singleton {
     private Context mContext;
     private CommMgr cManager;
     List<Ruta> lRutas;
-    Tracking oTracking;
+    public Tracking oTracking;
     BluetoothDiscovery BTD;
 
 
@@ -142,9 +142,18 @@ public class Singleton {
         BTD.stopBTScan();
     }
 
+
     /**************************************
      *        GETTERS Y SETTERS           *
      **************************************/
+
+    public Tracking getoTracking() {
+        return oTracking;
+    }
+
+    public void setoTracking(Tracking oTracking) {
+        this.oTracking = oTracking;
+    }
 
     public List<Ruta> getlRutas() {
         return lRutas;
@@ -152,14 +161,6 @@ public class Singleton {
 
     public Ruta getRuta(int i) {
         return lRutas.get(i);
-    }
-
-    public Tracking getoTracking() {
-        return oTracking;
-    }
-
-    public void setoTracking(Tracking oTracking) {
-        this.oTracking = new Tracking();
     }
 
     public Context getmContext() {
