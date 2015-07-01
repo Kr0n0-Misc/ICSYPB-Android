@@ -75,7 +75,7 @@ public class BTScanActivity extends ListActivity {
     List<Tracking> lTracking_envio = new ArrayList<>();
     GSONUtil gsonUtil = new GSONUtil();
     String json_envio;
-    private static String URL_BACKEND = "http://192.168.0.241/backend/Jsontobbdd";
+    private static String URL_BACKEND = "http://ctcloud.sytes.net/backend/Jsontobbdd";
 
 
 
