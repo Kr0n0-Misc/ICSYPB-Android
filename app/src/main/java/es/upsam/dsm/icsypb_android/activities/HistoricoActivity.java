@@ -39,7 +39,7 @@ public class HistoricoActivity extends ListActivity {
         lHistorico.clear();
 
         // Lanzamos query
-        Cursor c = db.rawQuery("SELECT * FROM Tracking ORDER BY FECHA ASC", null);
+        Cursor c = db.rawQuery("SELECT * FROM Tracking ORDER BY IDTRACK DESC", null);
 
         if (c.moveToFirst()) {
             // Existen registros

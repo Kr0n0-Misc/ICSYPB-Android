@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,7 @@ import es.upsam.dsm.icsypb_android.controller.Singleton;
 import es.upsam.dsm.icsypb_android.entities.Baliza;
 import es.upsam.dsm.icsypb_android.entities.Tracking;
 import es.upsam.dsm.icsypb_android.models.ICSYPBSQLiteHelper;
+import es.upsam.dsm.icsypb_android.utilities.GSONUtil;
 
 
 /**
@@ -58,6 +61,9 @@ public class BTScanActivity extends ListActivity {
     SQLiteDatabase db;
     ICSYPBSQLiteHelper icsyph;
     ArrayList<String> macs_registradas = new ArrayList<>();
+    List<Tracking> lTracking_envio = new ArrayList<>();
+    GSONUtil gsonUtil = new GSONUtil();
+    String json_envio;
 
 
     @Override
@@ -146,20 +152,44 @@ public class BTScanActivity extends ListActivity {
                     historico.setVisibility(View.VISIBLE);
                     historico.setClickable(true);
 
-                    TrackingAdapter adapter = new TrackingAdapter(datos.getmContext(), R.layout.activity_btscan, datos.lTracking);
-                    ListView lv = getListView();
+                    final TrackingAdapter adapter = new TrackingAdapter(datos.getmContext(), R.layout.activity_btscan, datos.lTracking);
+                    final ListView lv = getListView();
                     // 5 - Asociamos el adapter con el listview
                     lv.setAdapter(adapter);
                     lv.setClickable(true);
-                    /*
-                    TODO Lanzar activity con vista de detalle de horas
+                    // Listado clickeable
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            boolean selected;
+                            // Recogemos los TextView
+                            TextView tvMAC_BALIZA = (TextView) view.findViewById(R.id.tvMAC_BALIZA);
+                            TextView tvDESC_Baliza = (TextView) view.findViewById(R.id.tvDESC_BALIZA);
+                            TextView tvCuenta = (TextView) view.findViewById(R.id.tvCUENTA);
+                            TextView tvPosicion = (TextView) view.findViewById(R.id.tvPOSICION);
 
+                            if (tvMAC_BALIZA.getCurrentTextColor() == Color.BLACK) {
+                                // SELECCIONADO -> NO SELECCIONADO
+                                tvMAC_BALIZA.setTextColor(Color.GRAY);
+                                tvDESC_Baliza.setTextColor(Color.GRAY);
+                                tvCuenta.setTextColor(Color.GRAY);
+                                tvPosicion.setTextColor(Color.GRAY);
+                                lv.deferNotifyDataSetChanged();
+                                // Eliminamos de la lista
+                                lTracking_envio.remove(datos.lTracking.get(i));
+                            }
+                            else {
+                                // NO SELECCIONADO -> SELECCIONADO
+                                tvMAC_BALIZA.setTextColor(Color.BLACK);
+                                tvDESC_Baliza.setTextColor(Color.BLACK);
+                                tvCuenta.setTextColor(Color.BLACK);
+                                tvPosicion.setTextColor(Color.BLACK);
+                                lv.deferNotifyDataSetChanged();
+                                lTracking_envio.add(datos.lTracking.get(i));
+                                // Insertamos en la lista
+                            }
                         }
                     });
-                    */
                     db.close();
                 }
 
@@ -171,7 +201,10 @@ public class BTScanActivity extends ListActivity {
                 - Si ok, mensaje y vamos al activity de rutas (RutasActivity)
                  */
                 if (bTexto.equals("GUARDAR")) {
-                    //TODO
+                    json_envio = gsonUtil.ob2json(lTracking_envio);
+
+
+
                 }
             }
         });

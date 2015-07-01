@@ -1,6 +1,9 @@
 package es.upsam.dsm.icsypb_android.utilities;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.List;
 import java.lang.reflect.Type;
 
 import es.upsam.dsm.icsypb_android.entities.Ruta;
+import es.upsam.dsm.icsypb_android.entities.Tracking;
 
 /**
  * GSONUtil
@@ -53,6 +57,18 @@ public class GSONUtil {
         lRuta = new ArrayList<Ruta>(Arrays.asList(aRuta));
         // 3 - Devolvemos la lista de Rutas
         return(lRuta);
-
     }
+
+    public String ob2json(List<Tracking> lTracking) {
+        String json_envio = "";
+
+        try {
+            json_envio = gson.toJson(lTracking);
+        } catch (JsonParseException e) {
+            Log.v("[GSon]", "Error en parseo");
+        }
+        return(json_envio);
+    }
+
+
 }
