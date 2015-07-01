@@ -216,6 +216,7 @@ public class BTScanActivity extends ListActivity {
                 if (bTexto.equals("GUARDAR")) {
                     json_envio = gsonUtil.ob2json(lTracking_envio);
                     sendJson(datos.URL_RUTAS, json_envio);
+                    datos.Trazas("REGISTROS GUARDADOS");
                 }
             }
         });
