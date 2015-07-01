@@ -33,6 +33,7 @@ public class SplashScreen extends Activity {
         // 1 - Visualizamos el activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        setTitle(R.string.title_activity_splash_screen);
 
         // 2 - Creamos un handler que se ejecute durante SPLASH_TIME_OUT
         new Handler().postDelayed(new Runnable() {

@@ -31,7 +31,7 @@ public class Singleton {
     // ATRIBUTOS DE CLASE
     private static Singleton mInstance = null;
     //private static String URL_RUTAS = "http://ctcloud.sytes.net/backend/Jsonbase";
-    private static String URL_RUTAS = "http://192.168.0.241/backend/Jsonbase";
+    public static String URL_RUTAS = "http://192.168.0.241/backend/Jsonbase";
     private Context mContext;
     private CommMgr cManager;
     public List<Ruta> lRutas;

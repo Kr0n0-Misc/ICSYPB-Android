@@ -12,6 +12,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.protocol.HTTP;
+
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,6 +75,8 @@ public class BTScanActivity extends ListActivity {
     List<Tracking> lTracking_envio = new ArrayList<>();
     GSONUtil gsonUtil = new GSONUtil();
     String json_envio;
+    private static String URL_BACKEND = "http://192.168.0.241/backend/Jsontobbdd";
+
 
 
     @Override
@@ -202,9 +215,7 @@ public class BTScanActivity extends ListActivity {
                  */
                 if (bTexto.equals("GUARDAR")) {
                     json_envio = gsonUtil.ob2json(lTracking_envio);
-
-
-
+                    sendJson(datos.URL_RUTAS, json_envio);
                 }
             }
         });
@@ -348,6 +359,35 @@ public class BTScanActivity extends ListActivity {
         }
     };
 
+    protected void sendJson(final String url, final String json_envio) {
+        Thread t = new Thread() {
+
+            public void run() {
+                Looper.prepare(); //For Preparing Message Pool for the child Thread
+                HttpClient client = new DefaultHttpClient();
+                HttpConnectionParams.setConnectionTimeout(client.getParams(), 10000); //Timeout Limit
+                HttpResponse response;
+
+                try{
+                    HttpPost post = new HttpPost(URL_BACKEND);
+                    StringEntity se = new StringEntity(json_envio);
+                    se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+                    post.setEntity(se);
+                    response = client.execute(post);
+
+                    if(response!=null){
+                        InputStream in = response.getEntity().getContent(); //Get the data in the entity
+                    }
+
+                }catch(Exception e) {
+                e.printStackTrace();
+                Log.v("Error", "Cannot Estabilish Connection");
+            }
+            Looper.loop(); //Loop in the message queue
+        }
+    };
+    t.start();
+}
 }
 
 
