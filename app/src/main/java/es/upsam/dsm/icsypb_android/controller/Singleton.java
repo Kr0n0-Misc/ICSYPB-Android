@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,7 +21,7 @@ import es.upsam.dsm.icsypb_android.utilities.GSONUtil;
 /**
  * Singleton
  *
- * @brief Patrón singleton para gestionar los datos entre activities
+ * Patrón singleton para gestionar los datos entre activities
  * @author Kr0n0
  *
  * Referencias :    https://gist.github.com/Akayh/5566992
@@ -50,7 +52,7 @@ public class Singleton {
     /**
      * getInstance()
      *
-     * @brief Devuelve la instancia del singleton
+     * Devuelve la instancia del singleton
      * @return mInstance
      */
     public static Singleton getInstance(Context context) {
@@ -64,18 +66,20 @@ public class Singleton {
     /**
      * comprobarConexion()
      *
-     * @brief Método que comprueba si hay conectividad o no
+     * Método que comprueba si hay conectividad o no
      * @return boolean true si hay conexion false si no la hay
      */
     public boolean comprobarConexion() {
-        if (CommMgr.isNoNetworkAvailable(mContext)) return false;
+        /*if (CommMgr.isNoNetworkAvailable(mContext)) return false;
         else return true;
+        */
+        return !CommMgr.isNoNetworkAvailable(mContext);
     }
 
     /**
      * recibirRutas()
      *
-     * @brief Método que descarga el JSON de las rutas, lo deserializa y lo instancia en ¿ARRAYLIST?
+     * Método que descarga el JSON de las rutas, lo deserializa y lo instancia en ¿ARRAYLIST?
      * @return boolean true si se han recibido false si hay error
      */
     public boolean recibirRutas() throws ExecutionException, InterruptedException {
@@ -108,14 +112,35 @@ public class Singleton {
     /**
      * Trazas
      *
-     * @brief Deja un mensaje Toast en la aplicación de duración corta
+     * Deja un mensaje Toast en la aplicación de duración corta
      * @param mensaje Mensaje de tipo String
-     * @return void
      */
      public void Trazas (String mensaje) {
          Toast toast = Toast.makeText(mContext, mensaje, Toast.LENGTH_SHORT);
          toast.show();
      }
+
+
+    public String md5(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest)
+                hexString.append(Integer.toHexString(0xFF & aMessageDigest));
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
 
     /**************************************
      *        GETTERS Y SETTERS           *

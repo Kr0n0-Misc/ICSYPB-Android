@@ -5,6 +5,8 @@ import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -76,6 +78,8 @@ public class BTScanActivity extends ListActivity {
     GSONUtil gsonUtil = new GSONUtil();
     String json_envio;
     private static String URL_BACKEND = "http://ctcloud.sytes.net/backend/Jsontobbdd";
+    String clave_hash_pub;
+    int numero_registros = 0;
 
 
 
@@ -165,7 +169,7 @@ public class BTScanActivity extends ListActivity {
                     historico.setVisibility(View.VISIBLE);
                     historico.setClickable(true);
 
-                    final TrackingAdapter adapter = new TrackingAdapter(datos.getmContext(), R.layout.activity_btscan, datos.lTracking);
+                    final TrackingAdapter adapter = new TrackingAdapter(getBaseContext(), R.layout.activity_btscan, datos.lTracking);
                     final ListView lv = getListView();
                     // 5 - Asociamos el adapter con el listview
                     lv.setAdapter(adapter);
@@ -174,6 +178,7 @@ public class BTScanActivity extends ListActivity {
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                             boolean selected;
                             // Recogemos los TextView
                             TextView tvMAC_BALIZA = (TextView) view.findViewById(R.id.tvMAC_BALIZA);
@@ -214,19 +219,33 @@ public class BTScanActivity extends ListActivity {
                 - Si ok, mensaje y vamos al activity de rutas (RutasActivity)
                  */
                 if (bTexto.equals("GUARDAR")) {
+                    // Generamos el hash
+                    Calendar cal = Calendar.getInstance();
+                    String fecha_actual;
+                    fecha_actual = cal.getTime().toString();
+                    clave_hash_pub = datos.md5(fecha_actual);
+                    // Copiamos al portapapeles la clave
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("RUTA", clave_hash_pub);
+                    clipboard.setPrimaryClip(clip);
+                    // Añadimos la clave a la lista de Tracking
+                    actualizarHash(lTracking_envio, clave_hash_pub);
+                    // Enviamos el JSON
                     json_envio = gsonUtil.ob2json(lTracking_envio);
                     sendJson(datos.URL_RUTAS, json_envio);
-                    datos.Trazas("REGISTROS GUARDADOS");
+                    // Mensaje muestra
+                    datos.Trazas("Registros enviados - Clave pública "+ clave_hash_pub +" copiada al portapapeles.");
                 }
             }
         });
     }
 
     /**
+     * buscarArray
      *
-     * @param lBalizas
-     * @param cadena
-     * @return
+     * @param lBalizas Lista de balizas
+     * @param cadena Cadena de texto a buscar
+     * @return posicion
      */
     public int buscarArray(List<Baliza> lBalizas, String cadena) {
         String mac;
@@ -242,6 +261,23 @@ public class BTScanActivity extends ListActivity {
         // Devuelve Integer.MAX_VALUE si no la ha encontrado
         return(Integer.MAX_VALUE);
     }
+
+    /**
+     *
+     * @param lTracking_envio
+     * @param clave_hash_pub
+     * @return
+     */
+    public void actualizarHash(List<Tracking> lTracking_envio, String clave_hash_pub) {
+
+        // Recorremos el ArrayList de lTracking_envio actualizando clave_hash_pub
+        for (int i=0;i<lTracking_envio.size();i++) {
+            lTracking_envio.get(i).setIdtrackpub(clave_hash_pub);
+        }
+    }
+
+
+
 
     /**
      *
@@ -310,6 +346,8 @@ public class BTScanActivity extends ListActivity {
                     if (buscarMACRegistrada(macs_registradas, mac_actual)) {
 
                         // BALIZA ENCONTRADA - RECUPERAMOS LOS DATOS
+                        numero_registros++;
+                        datos.Trazas("BALIZA "+ lBalizas.get(pos_array_baliza).getTexto() +" ENCONTRADA ("+ numero_registros+")");
                         Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
                         // Rellenamos el objeto tracking
                         tracking.setMac_usuario(mac_dispositivo);

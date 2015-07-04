@@ -13,14 +13,16 @@
             android:text="Ruta : "
             android:id="@+id/textView4"
             android:layout_column="0"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#ff000000" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tvhDESC_RUTA"
             android:id="@+id/tvhDESC_RUTA"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:textColor="#ff000000" />
     </TableRow>
 
     <TableRow
@@ -33,14 +35,16 @@
             android:text="Baliza : "
             android:id="@+id/textView6"
             android:layout_column="0"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#ff000000" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tvhDESC_BALIZA"
             android:id="@+id/tvhDESC_BALIZA"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:textColor="#ff000000" />
     </TableRow>
 
     <TableRow
@@ -53,14 +57,16 @@
             android:text="Posición : "
             android:id="@+id/textView8"
             android:layout_column="0"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#ff000000" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tvhPOSICION"
             android:id="@+id/tvhPOSICION"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:textColor="#ff000000" />
     </TableRow>
 
     <TableRow
@@ -73,13 +79,15 @@
             android:text="Fecha : "
             android:id="@+id/textView10"
             android:layout_column="0"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#ff000000" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tvhFECHA"
             android:id="@+id/tvhFECHA"
-            android:layout_column="1" />
+            android:layout_column="1"
+            android:textColor="#ff000000" />
     </TableRow>
 </TableLayout>
