@@ -368,7 +368,7 @@ public class BTScanActivity extends ListActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Calendar cal = Calendar.getInstance();
-            sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+            sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
             // Si se detecta un dispositivo
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
