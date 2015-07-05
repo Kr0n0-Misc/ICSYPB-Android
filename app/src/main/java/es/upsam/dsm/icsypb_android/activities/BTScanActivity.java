@@ -120,7 +120,7 @@ public class BTScanActivity extends ListActivity {
              @Override
              public void onClick(View view) {
                  Intent i = new Intent(BTScanActivity.this, HistoricoActivity.class);
-                 //i.putExtra("posicion", position);
+                 i.putExtra("posicion", posicion);
                  startActivity(i);
              }
          }

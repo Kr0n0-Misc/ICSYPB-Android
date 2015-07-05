@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +29,25 @@ public class HistoricoActivity extends ListActivity {
         ICSYPBSQLiteHelper icsyph;
         List<Tracking> lHistorico;
         Tracking historico;
+        TextView texto;
+        int posicion;
+        int id_ruta;
+        String nombre_ruta;
 
+        // Recogemos los parámetros desde la otra Activity
+        Bundle parametros = getIntent().getExtras();
+        posicion = parametros.getInt("posicion");
+
+        // Asociamos el layout activity_historico
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historico);
+
+        // Cambiamos el texto para reflejar la ruta
+        nombre_ruta = datos.getRuta(posicion).getDescripcion();
+        texto = (TextView) findViewById(R.id.textView3);
+        texto.setText("Historico - Ruta "+ nombre_ruta);
+
+        // Iniciamos la BBDD en R/O
         icsyph = new ICSYPBSQLiteHelper(this, "ICSYPBDB", null, 1);
         db = icsyph.getReadableDatabase();
 
@@ -38,8 +55,10 @@ public class HistoricoActivity extends ListActivity {
         lHistorico = new ArrayList<>();
         lHistorico.clear();
 
+        // Recogemos el id de la ruta actual
+        id_ruta = datos.getRuta(posicion).getId();
         // Lanzamos query
-        Cursor c = db.rawQuery("SELECT * FROM Tracking ORDER BY IDTRACK DESC", null);
+        Cursor c = db.rawQuery("SELECT * FROM Tracking WHERE ID_RUTA="+ id_ruta +" ORDER BY IDTRACK DESC", null);
 
         if (c.moveToFirst()) {
             // Existen registros
