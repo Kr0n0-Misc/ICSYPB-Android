@@ -24,10 +24,8 @@ public class TrackingAdapter extends ArrayAdapter<Tracking> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         String mac_baliza;
         String desc_baliza;
-        int cuenta;
         String posicion;
 
         // 1 - Recoger el dato de esta posicion

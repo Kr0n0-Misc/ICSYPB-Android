@@ -77,11 +77,13 @@ public class BTScanActivity extends ListActivity {
     ICSYPBSQLiteHelper icsyph;
     ArrayList<String> macs_registradas = new ArrayList<>();
     List<Tracking> lTracking_envio = new ArrayList<>();
+    List<Tracking> lTracking_registro = new ArrayList<>();
     GSONUtil gsonUtil = new GSONUtil();
     String json_envio;
     private static String URL_BACKEND = "http://ctcloud.sytes.net/backend/Jsontobbdd";
     String clave_hash_pub;
     int numero_registros = 0;
+    Timer timer;
 
 
 
@@ -114,6 +116,7 @@ public class BTScanActivity extends ListActivity {
         posicion = parametros.getInt("posicion");
         // 6 - Recogemos la lista de Balizas de esa ruta
         lBalizas = datos.getRuta(posicion).getBalizas();
+        lTracking_registro = datos.getlTracking();
         // 7 - Recogemos el boton y el texto
         boton = (Button) findViewById(R.id.button);
         texto = (TextView) findViewById(R.id.textView2);
@@ -150,12 +153,17 @@ public class BTScanActivity extends ListActivity {
                     TimerTask tBorradoMacs = new TimerTask() {
                         @Override
                         public void run() {
+                            /*
+                            for (int i=0;i<macs_registradas.size();i++) {
+                                borrarMacTracking(lTracking_registro, macs_registradas.get(i));
+                            }
                             numero_registros = 0;
+                            */
                             macs_registradas.clear();
                         }
                     };
                     // Lanzamos la tarea cada 3 minutos (180000 milisegundos)
-                    Timer timer = new Timer();
+                    timer = new Timer();
                     //timer.scheduleAtFixedRate(tBorradoMacs, 0, 10000);
                     timer.scheduleAtFixedRate(tBorradoMacs, 0, 180000);
                 }
@@ -170,23 +178,24 @@ public class BTScanActivity extends ListActivity {
                 - Deshabilitamos el botón hasta que el onClick del ListView lo active (si hay alguno seleccionado)
                  */
                 if (bTexto.equals("PARAR")) {
-                    // 1 - Deshabilitamos la búsqueda bluetooth
+                    // Paramos el timer
+                    timer.cancel();
+                    // Deshabilitamos la búsqueda bluetooth
                     if (mBtAdapter.isDiscovering())
                         mBtAdapter.cancelDiscovery();
-                    // 2 - Desregistramos el BroadcastReceiver bluetooth
+                    // Desregistramos el BroadcastReceiver bluetooth
                     getBaseContext().unregisterReceiver(mReceiver_reset);
                     getBaseContext().unregisterReceiver(mReceiver_scan);
-
                     //boton.setEnabled(false);
                     texto.setText("Seleccione los puntos y pulse guardar");
                     boton.setText("GUARDAR");
                     historico.setVisibility(View.VISIBLE);
                     historico.setClickable(true);
 
-                    final TrackingAdapter adapter = new TrackingAdapter(getBaseContext(), R.layout.activity_btscan, datos.lTracking);
+                    final TrackingAdapter trackingAdapter = new TrackingAdapter(getBaseContext(), R.layout.activity_btscan, lTracking_registro);
                     final ListView lv = getListView();
                     // 5 - Asociamos el adapter con el listview
-                    lv.setAdapter(adapter);
+                    lv.setAdapter(trackingAdapter);
                     lv.setClickable(true);
                     // Listado clickeable
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -208,7 +217,7 @@ public class BTScanActivity extends ListActivity {
                                 tvPosicion.setTextColor(Color.GRAY);
                                 lv.deferNotifyDataSetChanged();
                                 // Eliminamos de la lista
-                                lTracking_envio.remove(datos.lTracking.get(i));
+                                lTracking_envio.remove(lTracking_registro.get(i));
                             }
                             else {
                                 // NO SELECCIONADO -> SELECCIONADO
@@ -217,7 +226,7 @@ public class BTScanActivity extends ListActivity {
                                 tvCuenta.setTextColor(Color.BLACK);
                                 tvPosicion.setTextColor(Color.BLACK);
                                 lv.deferNotifyDataSetChanged();
-                                lTracking_envio.add(datos.lTracking.get(i));
+                                lTracking_envio.add(lTracking_registro.get(i));
                                 // Insertamos en la lista
                             }
                         }
@@ -234,6 +243,7 @@ public class BTScanActivity extends ListActivity {
                  */
                 if (bTexto.equals("GUARDAR")) {
                     // Generamos el hash
+                    clave_hash_pub = "";
                     Calendar cal = Calendar.getInstance();
                     String fecha_actual;
                     fecha_actual = cal.getTime().toString();
@@ -275,6 +285,22 @@ public class BTScanActivity extends ListActivity {
         // Devuelve Integer.MAX_VALUE si no la ha encontrado
         return(Integer.MAX_VALUE);
     }
+
+    public void borrarMacTracking(List<Tracking> lTracking, String mac_baliza) {
+        String mac;
+
+        // 1 - Recorremos el ArrayList de lTracking
+        for (int i=0;i<lTracking.size();i++) {
+            mac = lTracking.get(i).getMac_baliza();
+            if (mac.equalsIgnoreCase(mac_baliza)) {
+                // Borra del tracking la baliza
+                lTracking.remove(i);
+            }
+        }
+    }
+
+
+
 
     /**
      *
@@ -319,7 +345,6 @@ public class BTScanActivity extends ListActivity {
      *
      */
     public final BroadcastReceiver mReceiver_reset = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -359,7 +384,8 @@ public class BTScanActivity extends ListActivity {
 
                         // BALIZA ENCONTRADA - RECUPERAMOS LOS DATOS
                         numero_registros++;
-                        datos.Trazas("BALIZA "+ lBalizas.get(pos_array_baliza).getTexto() +" ENCONTRADA ("+ numero_registros+")");
+                        tracking = new Tracking();
+                        datos.Trazas("BALIZA " + lBalizas.get(pos_array_baliza).getTexto() + " ENCONTRADA (" + numero_registros + ")");
                         Log.v("[BTScan]", "MAC ECONTRADA " + mac_actual);
                         // Rellenamos el objeto tracking
                         tracking.setMac_usuario(mac_dispositivo);
@@ -371,11 +397,11 @@ public class BTScanActivity extends ListActivity {
                         tracking.setFecha(sdf.format(cal.getTime()));
                         tracking.setPosicion(lBalizas.get(pos_array_baliza).getPosicion());
 
-                        // Añadimos el objeto al singleton
-                        datos.lTracking.add(tracking);
-
                         // Añadimos la MAC al array de existentes para filtrar en posteriores busquedas
                         macs_registradas.add(mac_actual.toUpperCase());
+
+                        // Añadimos el objeto al singleton como primer registro para ver el orden luego bien
+                        lTracking_registro.add(0, tracking);
 
                         // Insertamos los datos en la BBDD
                         try {
