@@ -41,6 +41,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.upsam.dsm.icsypb_android.R;
 import es.upsam.dsm.icsypb_android.adapters.TrackingAdapter;
@@ -144,6 +146,18 @@ public class BTScanActivity extends ListActivity {
                     // Cambiamos el botón a PARAR
                     texto.setText("Pulse el botón PARAR cuando termine");
                     boton.setText("PARAR");
+                    // Creamos la tarea de borrado del array y del numero de registros
+                    TimerTask tBorradoMacs = new TimerTask() {
+                        @Override
+                        public void run() {
+                            numero_registros = 0;
+                            macs_registradas.clear();
+                        }
+                    };
+                    // Lanzamos la tarea cada 3 minutos (180000 milisegundos)
+                    Timer timer = new Timer();
+                    //timer.scheduleAtFixedRate(tBorradoMacs, 0, 10000);
+                    timer.scheduleAtFixedRate(tBorradoMacs, 0, 180000);
                 }
 
                 /* 2 - PARAR
@@ -311,8 +325,6 @@ public class BTScanActivity extends ListActivity {
             String action = intent.getAction();
 
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                Log.v("[BTScan]", "Borrando filtro de MACs registradas");
-                macs_registradas.clear();
                 Log.v("[BTScan]", "Reiniciando discover");
                 mBtAdapter.startDiscovery();
                 }
@@ -336,7 +348,7 @@ public class BTScanActivity extends ListActivity {
             // Si se detecta un dispositivo
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                mac_actual = device.getAddress();
+                mac_actual = device.getAddress().toUpperCase();
                 pos_array_baliza = buscarArray(lBalizas, mac_actual);
 
                 // Si la MAC pertenece a la ruta seleccionada
@@ -355,12 +367,15 @@ public class BTScanActivity extends ListActivity {
                         tracking.setDesc_ruta(datos.getRuta(posicion).getDescripcion());
                         tracking.setId_baliza(lBalizas.get(pos_array_baliza).getId());
                         tracking.setDesc_baliza(lBalizas.get(pos_array_baliza).getTexto());
-                        tracking.setMac_baliza(mac_actual);
+                        tracking.setMac_baliza(mac_actual.toUpperCase());
                         tracking.setFecha(sdf.format(cal.getTime()));
                         tracking.setPosicion(lBalizas.get(pos_array_baliza).getPosicion());
 
                         // Añadimos el objeto al singleton
                         datos.lTracking.add(tracking);
+
+                        // Añadimos la MAC al array de existentes para filtrar en posteriores busquedas
+                        macs_registradas.add(mac_actual.toUpperCase());
 
                         // Insertamos los datos en la BBDD
                         try {
@@ -376,11 +391,11 @@ public class BTScanActivity extends ListActivity {
                                             "IDTRACKPUB" +
                                             ") " +
                                             "VALUES ('" +
-                                            "" + tracking.getMac_usuario() + "'," +
+                                            "" + tracking.getMac_usuario().toUpperCase() + "'," +
                                             "'" + tracking.getId_ruta() + "'," +
                                             "'" + tracking.getDesc_ruta() + "'," +
                                             "'" + tracking.getId_baliza() + "'," +
-                                            "'" + tracking.getMac_baliza() + "'," +
+                                            "'" + tracking.getMac_baliza().toUpperCase() + "'," +
                                             "'" + tracking.getDesc_baliza() + "'," +
                                             "'" + tracking.getPosicion() + "'," +
                                             "'" + tracking.getFecha() + "'," +
@@ -389,8 +404,7 @@ public class BTScanActivity extends ListActivity {
                         } catch (SQLException e) {
                             Log.v ("[BTScanActivity]", "Error en SQLite");
                         }
-                        // Añadimos la MAC al array de existentes para filtrar en posteriores busquedas
-                        macs_registradas.add(mac_actual);
+
                     }
 
                 }
